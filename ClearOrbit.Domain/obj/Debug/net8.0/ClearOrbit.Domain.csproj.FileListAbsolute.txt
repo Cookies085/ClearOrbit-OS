@@ -1,0 +1,11 @@
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\bin\Debug\net8.0\ClearOrbit.Domain.deps.json
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\bin\Debug\net8.0\ClearOrbit.Domain.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\bin\Debug\net8.0\ClearOrbit.Domain.pdb
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ClearOrbit.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ClearOrbit.Domain.AssemblyInfoInputs.cache
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ClearOrbit.Domain.AssemblyInfo.cs
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ClearOrbit.Domain.csproj.CoreCompileInputs.cache
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ClearOrbit.Domain.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\refint\ClearOrbit.Domain.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ClearOrbit.Domain.pdb
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Domain\obj\Debug\net8.0\ref\ClearOrbit.Domain.dll
