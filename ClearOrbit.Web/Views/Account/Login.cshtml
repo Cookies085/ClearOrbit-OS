@@ -1,48 +1,57 @@
 ﻿@model ClearOrbit.Web.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Sign In";
     Layout = "_LoginLayout";
 }
 
-<div class="login-wrap">
-    <div class="login-card">
-        <div class="login-brand">
-            <img src="~/img/logo-light.png" alt="ClearOrbit Group" style="height:80px;margin-bottom:16px;" />
-            <h1>Welcome Back, Orbiter</h1>
-            <p>Sign in to ClearOrbit OS</p>
+<nav class="co-auth-nav">
+    <a href="/" class="co-auth-nav-brand">
+        <img src="~/img/logo-dark.png" alt="ClearOrbit" />
+        <span>CLEARORBIT</span>
+    </a>
+    <a href="/" class="co-auth-nav-back">← Back to site</a>
+</nav>
+
+<div class="co-auth-page">
+    <div class="co-auth-orbit"></div>
+
+    <div class="co-auth-card">
+        <div class="co-auth-logo">
+            <img src="~/img/logo-dark.png" alt="ClearOrbit Group" />
         </div>
+
+        <h1 class="co-auth-title">Welcome back</h1>
+        <p class="co-auth-subtitle">Sign in to ClearOrbit OS</p>
 
         <form asp-action="Login" method="post">
             @Html.AntiForgeryToken()
             <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
 
-            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+            <div asp-validation-summary="ModelOnly" class="co-auth-error"></div>
 
-            <div class="form-group">
+            <div class="co-auth-field">
                 <label asp-for="Email">Email</label>
                 <input asp-for="Email" type="email" autocomplete="username" placeholder="you@clearorbit.co.za" />
-                <span asp-validation-for="Email" class="field-error"></span>
+                <span asp-validation-for="Email" class="co-auth-field-error"></span>
             </div>
 
-            <div class="form-group">
+            <div class="co-auth-field">
                 <label asp-for="Password">Password</label>
                 <input asp-for="Password" type="password" autocomplete="current-password" placeholder="••••••••" />
-                <span asp-validation-for="Password" class="field-error"></span>
+                <span asp-validation-for="Password" class="co-auth-field-error"></span>
             </div>
 
-            <div class="form-group-inline">
-                <label class="checkbox">
-                    <input asp-for="RememberMe" type="checkbox" />
-                    <span>Remember me</span>
-                </label>
-            </div>
+            <label class="co-auth-remember">
+                <input asp-for="RememberMe" type="checkbox" />
+                <span>Keep me signed in</span>
+            </label>
 
-            <button type="submit" class="btn-primary" style="width:100%;">Sign In</button>
+            <button type="submit" class="co-auth-btn">Sign In →</button>
         </form>
 
-        <p class="login-back">
-            <a href="/">← Back to clearorbit.co.za</a>
-        </p>
+        <div class="co-auth-footer">
+            <a href="/">← Return to clearorbit.co.za</a>
+        </div>
     </div>
 </div>
 

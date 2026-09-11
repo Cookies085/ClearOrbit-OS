@@ -3,34 +3,42 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030914" />
     <title>@ViewData["Title"] — ClearOrbit Group</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/clearorbit.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
 </head>
 <body>
 
-    <nav class="landing-nav">
-        <a href="/" class="landing-brand">
-            <img src="~/img/logo-dark.png" alt="ClearOrbit Group" style="height:44px;" />
+    <nav class="co-nav">
+        <a href="/" class="co-nav-brand">
+            <img src="~/img/logo-dark.png" alt="ClearOrbit" />
+            <span>CLEARORBIT</span>
         </a>
-        <div class="landing-nav-links">
+
+        <div class="co-nav-links">
+            <a href="#philosophy">Philosophy</a>
             <a href="#divisions">Divisions</a>
-            <a href="#values">Values</a>
+            <a href="#community">Impact</a>
             <a href="#contact">Contact</a>
-            <a href="/Account/Login" class="btn-login">Login</a>
+            <a href="/Account/Login" class="co-nav-cta">Enter ClearOrbit OS →</a>
         </div>
     </nav>
 
     @RenderBody()
 
-    <footer class="landing-footer">
+    <footer class="co-footer" id="contact">
         <p>
-            <strong>ClearOrbit Group</strong> &copy; @DateTime.UtcNow.Year &mdash;
-            Where Clarity Meets Innovation.
+            <strong>ClearOrbit Group</strong> &copy; @DateTime.UtcNow.Year &mdash; Where Clarity Meets Innovation.
         </p>
-        <p>Chief Navigator: Bhungani Machotola (Bruno) &mdash; clearorbit.co.za</p>
+        <div class="co-footer-links">
+            <a href="mailto:hello@clearorbit.co.za">hello@clearorbit.co.za</a>
+            <a href="/Account/Login">Enter ClearOrbit OS</a>
+        </div>
     </footer>
 
 </body>
