@@ -1,0 +1,56 @@
+﻿@model ClearOrbit.Web.ViewModels.TutorViewModel
+@{
+    ViewData["Title"] = "New Tutor";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:640px;">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="FirstName">First Name *</label>
+                <input asp-for="FirstName" />
+                <span asp-validation-for="FirstName" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName">Last Name *</label>
+                <input asp-for="LastName" />
+                <span asp-validation-for="LastName" class="field-error"></span>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" type="email" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone">Phone</label>
+                <input asp-for="Phone" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Specializations">Specializations *</label>
+            <input asp-for="Specializations" placeholder="e.g., Mathematics, Physical Sciences" />
+            <span asp-validation-for="Specializations" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Bio">Bio</label>
+            <textarea asp-for="Bio" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Add Tutor</button>
+            <a href="/Tutors" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

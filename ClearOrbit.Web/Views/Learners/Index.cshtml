@@ -1,0 +1,77 @@
+﻿@model List<ClearOrbit.Web.ViewModels.LearnerListItem>
+@{
+    ViewData["Title"] = "Learners";
+    Layout = "_Layout";
+}
+
+@section TopbarActions {
+    <a href="/Learners/Create" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">+ Enroll Learner</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">
+        @success
+    </div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No learners yet</h3>
+            <p>Enroll your first learner to start building the Academy.</p>
+            <a href="/Learners/Create" class="btn-primary">Enroll Learner</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Grade</th>
+                    <th>Age</th>
+                    <th>Guardian</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var l in Model)
+                {
+                    var statusColor = l.StatusName switch
+                    {
+                        "Active" => "#16A34A",
+                        "OnHold" => "#F59E0B",
+                        "Graduated" => "#1E90FF",
+                        "Withdrawn" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@l.Code</td>
+                        <td style="font-weight:600;">@l.FullName</td>
+                        <td><span class="badge badge-blue">@l.GradeLevelName</span></td>
+                        <td>@(l.Age > 0 ? l.Age.ToString() : "—")</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(l.GuardianName))
+                            {
+                                <div style="font-size:0.85rem;">@l.GuardianName</div>
+                                <div style="font-size:0.75rem;color:#6B7280;">@l.GuardianPhone</div>
+                            }
+                            else
+                            {
+                                <span style="color:#9CA3AF;">—</span>
+                            }
+                        </td>
+                        <td><span class="badge" style="background:@(statusColor)22;color:@statusColor;">@l.StatusName</span></td>
+                        <td style="text-align:right;">
+                            <a href="/Learners/Edit/@l.Id" style="font-size:0.85rem;">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

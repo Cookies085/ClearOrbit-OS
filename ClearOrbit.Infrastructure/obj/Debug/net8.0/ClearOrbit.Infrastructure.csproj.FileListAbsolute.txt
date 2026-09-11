@@ -19,3 +19,4 @@ C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Infrastructure\obj\Debug\net8.0\ref
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Infrastructure\obj\Debug\net8.0\ClearOrbit.Infrastructure.pdb
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Infrastructure\obj\Debug\net8.0\ClearOrbit.Infrastructure.genruntimeconfig.cache
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Infrastructure\obj\Debug\net8.0\ref\ClearOrbit.Infrastructure.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Infrastructure\obj\Debug\net8.0\ClearOrbit.Infrastructure.sourcelink.json

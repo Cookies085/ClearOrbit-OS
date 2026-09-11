@@ -1,0 +1,55 @@
+﻿@model List<ClearOrbit.Web.ViewModels.PaymentListItem>
+@{
+    ViewData["Title"] = "Payments";
+    Layout = "_Layout";
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">
+        @success
+    </div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No payments yet</h3>
+            <p>Record payments from invoice detail pages.</p>
+            <a href="/Invoices" class="btn-primary">Go to Invoices</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Invoice</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Method</th>
+                    <th>Reference</th>
+                    <th style="text-align:right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.8rem;font-weight:600;">@p.Code</td>
+                        <td>
+                            <a href="/Invoices/Details/@p.InvoiceId" style="font-family:monospace;font-size:0.8rem;">@p.InvoiceCode</a>
+                        </td>
+                        <td>@p.ClientName</td>
+                        <td>@p.PaymentDate.ToString("yyyy-MM-dd")</td>
+                        <td>@p.MethodName</td>
+                        <td>@(p.Reference ?? "—")</td>
+                        <td style="text-align:right;font-weight:600;color:#16A34A;">@p.Currency @p.Amount.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

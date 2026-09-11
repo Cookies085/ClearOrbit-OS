@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — ClearOrbit Group</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/clearorbit.css" asp-append-version="true" />
+</head>
+<body>
+
+    <nav class="landing-nav">
+        <a href="/" class="landing-brand">
+            <img src="~/img/logo-dark.png" alt="ClearOrbit Group" style="height:44px;" />
+        </a>
+        <div class="landing-nav-links">
+            <a href="#divisions">Divisions</a>
+            <a href="#values">Values</a>
+            <a href="#contact">Contact</a>
+            <a href="/Account/Login" class="btn-login">Login</a>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    <footer class="landing-footer">
+        <p>
+            <strong>ClearOrbit Group</strong> &copy; @DateTime.UtcNow.Year &mdash;
+            Where Clarity Meets Innovation.
+        </p>
+        <p>Chief Navigator: Bhungani Machotola (Bruno) &mdash; clearorbit.co.za</p>
+    </footer>
+
+</body>
+</html>

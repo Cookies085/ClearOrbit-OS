@@ -1,0 +1,98 @@
+﻿@model List<ClearOrbit.Web.ViewModels.InvoiceListItem>
+@{
+    ViewData["Title"] = "Invoices";
+    Layout = "_Layout";
+}
+
+@section TopbarActions {
+    <a href="/Invoices/Create" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">+ New Invoice</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">
+        @success
+    </div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No invoices yet</h3>
+            <p>Invoice a project and start tracking ClearOrbit's revenue.</p>
+            <a href="/Invoices/Create" class="btn-primary">Create Invoice</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Client</th>
+                    <th>Project</th>
+                    <th>Division</th>
+                    <th>Issued</th>
+                    <th>Due</th>
+                    <th>Total</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {
+                    var statusColor = i.StatusName switch
+                    {
+                        "Draft" => "#6B7280",
+                        "Sent" => "#3B82F6",
+                        "PartiallyPaid" => "#F59E0B",
+                        "Paid" => "#16A34A",
+                        "Cancelled" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.8rem;font-weight:600;">@i.Code</td>
+                        <td>@i.ClientName</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(i.ProjectCode))
+                            {
+                                <div style="font-family:monospace;font-size:0.72rem;color:#6B7280;">@i.ProjectCode</div>
+                                <div style="font-size:0.82rem;">@i.ProjectName</div>
+                            }
+                            else
+                            {
+                                <span style="color:#9CA3AF;">—</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge" style="background:@(i.DivisionAccent)22;color:@i.DivisionAccent;">
+                                @i.DivisionName
+                            </span>
+                        </td>
+                        <td>@i.IssueDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @i.DueDate.ToString("yyyy-MM-dd")
+                            @if (i.IsOverdue)
+                            {
+                                <span style="color:#DC2626;font-size:0.72rem;font-weight:600;"> OVERDUE</span>
+                            }
+                        </td>
+                        <td style="font-weight:600;">@i.Currency @i.Total.ToString("N2")</td>
+                        <td style="font-weight:600;color:@(i.BalanceDue > 0 ? "#DC2626" : "#16A34A");">
+                            @i.Currency @i.BalanceDue.ToString("N2")
+                        </td>
+                        <td>
+                            <span class="badge" style="background:@(statusColor)22;color:@statusColor;">@i.StatusName</span>
+                        </td>
+                        <td style="text-align:right;">
+                            <a href="/Invoices/Details/@i.Id" style="font-size:0.85rem;">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -15,3 +15,4 @@ C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Application\obj\Debug\net8.0\ClearO
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Application\obj\Debug\net8.0\refint\ClearOrbit.Application.dll
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Application\obj\Debug\net8.0\ClearOrbit.Application.pdb
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Application\obj\Debug\net8.0\ref\ClearOrbit.Application.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Application\obj\Debug\net8.0\ClearOrbit.Application.sourcelink.json

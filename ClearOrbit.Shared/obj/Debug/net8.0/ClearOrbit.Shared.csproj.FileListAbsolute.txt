@@ -9,3 +9,4 @@ C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Shared\obj\Debug\net8.0\ClearOrbit.
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Shared\obj\Debug\net8.0\refint\ClearOrbit.Shared.dll
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Shared\obj\Debug\net8.0\ClearOrbit.Shared.pdb
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Shared\obj\Debug\net8.0\ref\ClearOrbit.Shared.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Shared\obj\Debug\net8.0\ClearOrbit.Shared.sourcelink.json

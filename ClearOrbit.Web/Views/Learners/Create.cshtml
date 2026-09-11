@@ -1,0 +1,102 @@
+﻿@model ClearOrbit.Web.ViewModels.LearnerViewModel
+@{
+    ViewData["Title"] = "Enroll Learner";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:760px;">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="FirstName">First Name *</label>
+                <input asp-for="FirstName" />
+                <span asp-validation-for="FirstName" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName">Last Name *</label>
+                <input asp-for="LastName" />
+                <span asp-validation-for="LastName" class="field-error"></span>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="DateOfBirth">Date of Birth</label>
+                <input asp-for="DateOfBirth" type="date" />
+            </div>
+            <div class="form-group">
+                <label asp-for="GradeLevel">Grade Level</label>
+                <select asp-for="GradeLevel" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="0">—</option>
+                    <option value="1">Grade R</option>
+                    <option value="2">Grade 1</option>
+                    <option value="3">Grade 2</option>
+                    <option value="4">Grade 3</option>
+                    <option value="5">Grade 4</option>
+                    <option value="6">Grade 5</option>
+                    <option value="7">Grade 6</option>
+                    <option value="8">Grade 7</option>
+                    <option value="9">Grade 8</option>
+                    <option value="10">Grade 9</option>
+                    <option value="11">Grade 10</option>
+                    <option value="12">Grade 11</option>
+                    <option value="13">Grade 12</option>
+                    <option value="99">Adult Learner</option>
+                </select>
+            </div>
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:0.95rem;color:var(--co-deep);">Contact</h3>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" type="email" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone">Phone</label>
+                <input asp-for="Phone" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address">Address</label>
+            <input asp-for="Address" />
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:0.95rem;color:var(--co-deep);">Guardian (for minors)</h3>
+
+        <div class="form-group">
+            <label asp-for="GuardianName">Guardian Name</label>
+            <input asp-for="GuardianName" />
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="GuardianPhone">Guardian Phone</label>
+                <input asp-for="GuardianPhone" />
+            </div>
+            <div class="form-group">
+                <label asp-for="GuardianEmail">Guardian Email</label>
+                <input asp-for="GuardianEmail" type="email" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Notes">Notes</label>
+            <textarea asp-for="Notes" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Enroll Learner</button>
+            <a href="/Learners" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

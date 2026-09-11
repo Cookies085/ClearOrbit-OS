@@ -150,5 +150,6 @@ C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\refint\ClearOr
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\ClearOrbit.API.pdb
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\ClearOrbit.API.genruntimeconfig.cache
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\ref\ClearOrbit.API.dll
-C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\ClearOrbit.API.sourcelink.json
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -1,0 +1,43 @@
+﻿@model ClearOrbit.Web.ViewModels.ClientViewModel
+@{
+    ViewData["Title"] = "New Client";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:640px;">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Name">Client Name *</label>
+            <input asp-for="Name" placeholder="e.g., ABC School" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Industry">Industry</label>
+            <input asp-for="Industry" placeholder="e.g., Education" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Website">Website</label>
+            <input asp-for="Website" placeholder="https://example.com" />
+            <span asp-validation-for="Website" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Notes">Notes</label>
+            <textarea asp-for="Notes" rows="4" style="width:100%;padding:12px 16px;border:2px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-light);"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Create Client</button>
+            <a href="/Clients" class="btn-ghost" style="color:#6B7280;border-color:#E5E7EB;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

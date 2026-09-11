@@ -39,3 +39,4 @@ C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Web\obj\Debug\net8.0\ClearOrbit.Web
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Web\obj\Debug\net8.0\ClearOrbit.Web.genruntimeconfig.cache
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Web\obj\Debug\net8.0\ref\ClearOrbit.Web.dll
 C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\bhung\Desktop\ClearOrbit\ClearOrbit.Web\obj\Debug\net8.0\ClearOrbit.Web.sourcelink.json

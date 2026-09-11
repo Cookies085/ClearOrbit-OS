@@ -1,49 +1,127 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@{
+    var fullName = User.FindFirst(ClaimTypes.Name)?.Value ?? "User";
+    var email = User.FindFirst(ClaimTypes.Email)?.Value ?? "";
+    var initials = string.Concat(fullName.Split(' ').Take(2).Select(s => s.FirstOrDefault()));
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ClearOrbit.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ClearOrbit.Web.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] — ClearOrbit OS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/clearorbit.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ClearOrbit.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="app-shell">
+
+        <aside class="app-sidebar">
+            <div class="app-sidebar-brand">
+                <img src="~/img/logo-dark.png" alt="ClearOrbit" style="height:32px;" />
+            </div>
+
+            <nav class="app-nav">
+                <a class="app-nav-item @(currentController == "Dashboard" ? "active" : "")"
+                   href="/Dashboard">
+                    <span class="icon">⌂</span> Dashboard
+                </a>
+
+                <div class="app-nav-section">Core</div>
+
+                <a class="app-nav-item @(currentController == "Clients" ? "active" : "")"
+                   href="/Clients">
+                    <span class="icon">◆</span> Clients
+                </a>
+
+                <a class="app-nav-item @(currentController == "Services" ? "active" : "")"
+                   href="/Services">
+                    <span class="icon">◆</span> Services
+                </a>
+
+                <a class="app-nav-item @(currentController == "Projects" ? "active" : "")" 
+                   href="/Projects">
+                    <span class="icon">◆</span> Projects
+                </a>
+
+                <a class="app-nav-item @(currentController == "Tasks" ? "active" : "")" 
+                   href="/Tasks">
+                    <span class="icon">◆</span> Tasks
+                </a>
+
+                <div class="app-nav-section">Divisions</div>
+
+                <a class="app-nav-item @(currentController == "Academy" ? "active" : "")" 
+                   href="/Academy">
+                    <span class="icon">🎓</span> Academy
+                </a>
+                <a class="app-nav-item @(currentController == "Classes" ? "active" : "")" 
+                   href="/Classes">
+                    <span class="icon">📅</span> Classes
+                </a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Software</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Games</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Designs</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Innovation Lab</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Digital Solutions</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> MediaWorks</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Training</a>
+
+                <div class="app-nav-section">Finance & Admin</div>
+
+                <a class="app-nav-item @(currentController == "Invoices" ? "active" : "")" 
+                   href="/Invoices">
+                    <span class="icon">◆</span> Invoices
+                </a>
+                <a class="app-nav-item @(currentController == "Payments" ? "active" : "")" 
+                   href="/Payments">
+                    <span class="icon">◆</span> Payments
+                </a>
+                <a class="app-nav-item @(currentController == "Expenses" ? "active" : "")" 
+                   href="/Expenses">
+                    <span class="icon">◆</span> Expenses
+                </a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Reports</a>
+                <a class="app-nav-item" href="#"><span class="icon">◆</span> Admin</a>
+            </nav>
+
+            <div class="app-sidebar-footer">
+                <div class="app-user">
+                    <div class="app-user-avatar">@initials</div>
+                    <div class="app-user-info">
+                        <div class="app-user-name">@fullName</div>
+                        <div class="app-user-email">@email</div>
+                    </div>
+                    <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="app-logout-btn" title="Logout">⏻</button>
+                    </form>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
+        </aside>
+
+        <main class="app-main">
+            <div class="app-topbar">
+                <div>
+                    <h1>@ViewData["PageTitle"]</h1>
+                    @if (ViewData["PageSubtitle"] is string sub)
+                    {
+                        <div class="subtitle">@sub</div>
+                    }
+                </div>
+                <div>@RenderSection("TopbarActions", required: false)</div>
+            </div>
+
+            <div class="app-content">
+                @RenderBody()
+            </div>
         </main>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ClearOrbit.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

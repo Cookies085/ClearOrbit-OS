@@ -1,0 +1,181 @@
+﻿@model ClearOrbit.Web.ViewModels.DashboardSummary
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+
+    var profitColor = Model.Profit >= 0 ? "#16A34A" : "#DC2626";
+    var maxRevenue = Model.DivisionBreakdown.Any()
+        ? Math.Max(Model.DivisionBreakdown.Max(d => d.Revenue), 1)
+        : 1;
+}
+
+<div class="hero-card">
+    <div class="hero-card-inner">
+        <div style="font-size:0.72rem;letter-spacing:4px;color:#4DA9FF;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Welcome to</div>
+        <h2 style="font-size:2rem;font-weight:700;margin:0 0 10px;letter-spacing:-1px;color:#fff;">ClearOrbit OS</h2>
+        <p style="color:rgba(255,255,255,0.7);margin:0;max-width:600px;font-size:0.95rem;">
+            Your group at a glance. Clients, projects, invoices, expenses — all connected.
+        </p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:24px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);">
+            <div>
+                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Clients</div>
+                <div style="font-size:1.75rem;font-weight:700;color:#fff;letter-spacing:-1px;">@Model.ClientCount</div>
+            </div>
+            <div>
+                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Projects</div>
+                <div style="font-size:1.75rem;font-weight:700;color:#fff;letter-spacing:-1px;">@Model.TotalProjectCount</div>
+            </div>
+            <div>
+                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Open Tasks</div>
+                <div style="font-size:1.75rem;font-weight:700;color:#fff;letter-spacing:-1px;">@Model.OpenTaskCount</div>
+            </div>
+            <div>
+                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Overdue</div>
+                <div style="font-size:1.75rem;font-weight:700;color:@(Model.OverdueInvoiceCount > 0 ? "#FCA5A5" : "#fff");letter-spacing:-1px;">@Model.OverdueInvoiceCount</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:24px;">
+
+    <div class="stat-card">
+        <div class="stat-label">Revenue Collected</div>
+        <div class="stat-value" style="color:#16A34A;">@Model.Currency @Model.TotalRevenue.ToString("N0")</div>
+        <div class="stat-sub">Paid invoice total</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Outstanding</div>
+        <div class="stat-value" style="color:@(Model.OutstandingReceivables > 0 ? "#F59E0B" : "#16A34A");">@Model.Currency @Model.OutstandingReceivables.ToString("N0")</div>
+        <div class="stat-sub">Awaiting payment</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Expenses</div>
+        <div class="stat-value" style="color:#DC2626;">@Model.Currency @Model.TotalExpenses.ToString("N0")</div>
+        <div class="stat-sub">Total incurred</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Profit</div>
+        <div class="stat-value" style="color:@profitColor;">@Model.Currency @Model.Profit.ToString("N0")</div>
+        <div class="stat-sub">Revenue minus expenses</div>
+    </div>
+
+</div>
+
+<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-bottom:24px;">
+
+    <div class="co-card" style="margin:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 class="co-card-title" style="margin:0;">Recent Projects</h3>
+            <a href="/Projects" style="font-size:0.82rem;">View all →</a>
+        </div>
+
+        @if (Model.RecentProjects.Count == 0)
+        {
+            <div style="text-align:center;padding:32px 0;color:#9CA3AF;">
+                <p style="margin:0 0 16px;">No projects yet.</p>
+                <a href="/Projects/Create" class="btn-primary">Create your first project</a>
+            </div>
+        }
+        else
+        {
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                @foreach (var p in Model.RecentProjects)
+                {
+                    <a href="/Projects/Edit/@p.Id" style="display:block;padding:14px 16px;border-radius:12px;background:var(--co-light);text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#EBF3FB'" onmouseout="this.style.background='var(--co-light)'">
+                        <div style="display:flex;justify-content:space-between;align-items:start;">
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-family:monospace;font-size:0.7rem;color:#6B7280;margin-bottom:2px;">@p.Code</div>
+                                <div style="font-weight:600;color:var(--co-deep);font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@p.Name</div>
+                                @if (!string.IsNullOrWhiteSpace(p.ClientName))
+                                {
+                                    <div style="font-size:0.78rem;color:#6B7280;margin-top:2px;">@p.ClientName</div>
+                                }
+                            </div>
+                            <span class="badge" style="background:@(p.DivisionAccent)22;color:@p.DivisionAccent;flex-shrink:0;margin-left:12px;">@p.DivisionName</span>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="co-card" style="margin:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 class="co-card-title" style="margin:0;">Recent Invoices</h3>
+            <a href="/Invoices" style="font-size:0.82rem;">View all →</a>
+        </div>
+
+        @if (Model.RecentInvoices.Count == 0)
+        {
+            <div style="text-align:center;padding:32px 0;color:#9CA3AF;">
+                <p style="margin:0 0 16px;">No invoices yet.</p>
+                <a href="/Invoices/Create" class="btn-primary">Create first invoice</a>
+            </div>
+        }
+        else
+        {
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                @foreach (var i in Model.RecentInvoices)
+                {
+                    var statusColor = i.StatusName switch
+                    {
+                        "Draft" => "#6B7280",
+                        "Sent" => "#3B82F6",
+                        "PartiallyPaid" => "#F59E0B",
+                        "Paid" => "#16A34A",
+                        "Cancelled" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <a href="/Invoices/Details/@i.Id" style="display:block;padding:14px 16px;border-radius:12px;background:var(--co-light);text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#EBF3FB'" onmouseout="this.style.background='var(--co-light)'">
+                        <div style="display:flex;justify-content:space-between;align-items:start;">
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-family:monospace;font-size:0.7rem;color:#6B7280;margin-bottom:2px;">@i.Code</div>
+                                <div style="font-weight:600;color:var(--co-deep);font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@i.ClientName</div>
+                                @if (i.IsOverdue)
+                                {
+                                    <div style="font-size:0.72rem;color:#DC2626;font-weight:600;margin-top:2px;">OVERDUE</div>
+                                }
+                            </div>
+                            <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+                                <div style="font-weight:700;color:var(--co-deep);font-size:0.9rem;">@i.Currency @i.Total.ToString("N0")</div>
+                                <span class="badge" style="background:@(statusColor)22;color:@statusColor;margin-top:4px;">@i.StatusName</span>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+
+</div>
+
+@if (Model.DivisionBreakdown.Any())
+{
+    <div class="co-card">
+        <h3 class="co-card-title">Revenue by Division</h3>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+            @foreach (var d in Model.DivisionBreakdown)
+            {
+                var percent = (double)d.Revenue / (double)maxRevenue * 100;
+                <div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.85rem;">
+                        <span style="font-weight:600;color:var(--co-deep);">@d.DivisionName</span>
+                        <span style="color:#6B7280;">
+                            <span style="font-weight:600;color:var(--co-deep);">@Model.Currency @d.Revenue.ToString("N0")</span>
+                            <span style="margin-left:12px;">@d.ProjectCount project@(d.ProjectCount == 1 ? "" : "s")</span>
+                        </span>
+                    </div>
+                    <div style="height:8px;background:var(--co-light);border-radius:999px;overflow:hidden;">
+                        <div style="height:100%;width:@percent.ToString("F1")%;background:@d.AccentColor;border-radius:999px;transition:width 0.5s;"></div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

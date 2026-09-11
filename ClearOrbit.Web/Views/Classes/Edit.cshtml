@@ -1,0 +1,132 @@
+﻿@model ClearOrbit.Web.ViewModels.ClassViewModel
+@{
+    ViewData["Title"] = "Edit Class";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:800px;">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Status">Status *</label>
+            <select asp-for="Status" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                <option value="1">Draft</option>
+                <option value="2">Active</option>
+                <option value="3">Completed</option>
+                <option value="4">Cancelled</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Name">Class Name *</label>
+            <input asp-for="Name" placeholder="e.g., Grade 10 Maths — Evening Group" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Subject">Subject *</label>
+                <input asp-for="Subject" placeholder="e.g., Mathematics" />
+                <span asp-validation-for="Subject" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GradeLevel">Grade Level</label>
+                <select asp-for="GradeLevel" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="0">—</option>
+                    <option value="9">Grade 8</option>
+                    <option value="10">Grade 9</option>
+                    <option value="11">Grade 10</option>
+                    <option value="12">Grade 11</option>
+                    <option value="13">Grade 12</option>
+                    <option value="99">Adult Learner</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TutorId">Tutor *</label>
+            <select asp-for="TutorId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                <option value="">-- Select a tutor --</option>
+                @foreach (var t in Model.Tutors)
+                {
+                    <option value="@t.Id">@t.FullName — @t.Specializations</option>
+                }
+            </select>
+            <span asp-validation-for="TutorId" class="field-error"></span>
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:0.95rem;color:var(--co-deep);">Schedule</h3>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="DayOfWeek">Day</label>
+                <select asp-for="DayOfWeek" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                    <option value="7">Sunday</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime">Start Time</label>
+                <input asp-for="StartTime" type="time" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime">End Time</label>
+                <input asp-for="EndTime" type="time" />
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="StartDate">Start Date</label>
+                <input asp-for="StartDate" type="date" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate">End Date (optional)</label>
+                <input asp-for="EndDate" type="date" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Location">Location</label>
+            <input asp-for="Location" placeholder="e.g., Room 3 or Zoom link" />
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:0.95rem;color:var(--co-deep);">Capacity & Fees</h3>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="MaxCapacity">Max Capacity</label>
+                <input asp-for="MaxCapacity" type="number" />
+            </div>
+            <div class="form-group">
+                <label asp-for="FeePerLearner">Fee Per Learner</label>
+                <input asp-for="FeePerLearner" type="number" step="0.01" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Currency">Currency</label>
+                <input asp-for="Currency" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <a href="/Classes" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

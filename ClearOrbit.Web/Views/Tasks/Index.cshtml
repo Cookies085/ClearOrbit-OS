@@ -1,0 +1,90 @@
+﻿@model List<ClearOrbit.Web.ViewModels.TaskListItem>
+@{
+    ViewData["Title"] = "Tasks";
+    Layout = "_Layout";
+}
+
+@section TopbarActions {
+    <a href="/Tasks/Create" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">+ New Task</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">
+        @success
+    </div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No tasks yet</h3>
+            <p>Break your projects into small pieces of work.</p>
+            <a href="/Tasks/Create" class="btn-primary">Create Task</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Project</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Assignee</th>
+                    <th>Due</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    var statusColor = t.StatusName switch
+                    {
+                        "ToDo" => "#6B7280",
+                        "InProgress" => "#3B82F6",
+                        "Blocked" => "#DC2626",
+                        "InReview" => "#8B5CF6",
+                        "Done" => "#16A34A",
+                        "Cancelled" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    var priorityColor = t.PriorityName switch
+                    {
+                        "Low" => "#9CA3AF",
+                        "Normal" => "#3B82F6",
+                        "High" => "#F59E0B",
+                        "Urgent" => "#DC2626",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-weight:600;">
+                            @t.Title
+                            @if (t.StatusName == "Done")
+                            {
+                                <span style="color:#16A34A;">✓</span>
+                            }
+                        </td>
+                        <td>
+                            <div style="font-family:monospace;font-size:0.75rem;color:#6B7280;">@t.ProjectCode</div>
+                            <div style="font-size:0.85rem;">@t.ProjectName</div>
+                        </td>
+                        <td>
+                            <span class="badge" style="background:@(priorityColor)22;color:@priorityColor;">@t.PriorityName</span>
+                        </td>
+                        <td>
+                            <span class="badge" style="background:@(statusColor)22;color:@statusColor;">@t.StatusName</span>
+                        </td>
+                        <td>@(t.AssignedToName ?? "—")</td>
+                        <td>@(t.DueDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                        <td style="text-align:right;">
+                            <a href="/Tasks/Edit/@t.Id" style="font-size:0.85rem;">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

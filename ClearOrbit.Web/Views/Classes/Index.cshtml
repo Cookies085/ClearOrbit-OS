@@ -1,0 +1,76 @@
+﻿@model List<ClearOrbit.Web.ViewModels.ClassListItem>
+@{
+    ViewData["Title"] = "Classes";
+    Layout = "_Layout";
+}
+
+@section TopbarActions {
+    <a href="/Classes/Create" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">+ New Class</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No classes yet</h3>
+            <p>Create your first class offering and enroll learners.</p>
+            <a href="/Classes/Create" class="btn-primary">Create Class</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Class</th>
+                    <th>Schedule</th>
+                    <th>Tutor</th>
+                    <th>Enrolled</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    var statusColor = c.StatusName switch
+                    {
+                        "Draft" => "#6B7280",
+                        "Active" => "#16A34A",
+                        "Completed" => "#1E90FF",
+                        "Cancelled" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@c.Code</td>
+                        <td>
+                            <a href="/Classes/Details/@c.Id" style="font-weight:600;color:var(--co-deep);">@c.Name</a>
+                            <div style="font-size:0.75rem;color:#6B7280;">@c.Subject · @c.GradeLevelName</div>
+                        </td>
+                        <td>
+                            <div style="font-size:0.85rem;font-weight:500;">@c.DayOfWeekName</div>
+                            <div style="font-size:0.78rem;color:#6B7280;">@c.StartTime – @c.EndTime</div>
+                        </td>
+                        <td>@c.TutorName</td>
+                        <td>
+                            <span style="font-weight:600;">@c.EnrolledCount</span>
+                            <span style="color:#6B7280;">/ @c.MaxCapacity</span>
+                        </td>
+                        <td style="font-weight:600;">@c.Currency @c.FeePerLearner.ToString("N0")</td>
+                        <td><span class="badge" style="background:@(statusColor)22;color:@statusColor;">@c.StatusName</span></td>
+                        <td style="text-align:right;">
+                            <a href="/Classes/Details/@c.Id" style="font-size:0.85rem;">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

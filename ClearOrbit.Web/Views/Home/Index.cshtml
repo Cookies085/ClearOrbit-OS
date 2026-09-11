@@ -1,8 +1,116 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Where Clarity Meets Innovation";
+    Layout = "_LandingLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <div class="hero-content">
+        <div style="font-size:0.72rem;letter-spacing:6px;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:600;margin-bottom:24px;">
+            ClearOrbit Group
+        </div>
+        <h1>One Group.<br />Eight Divisions.<br /><span class="accent">Infinite Possibilities.</span></h1>
+        <p class="tagline">Clarity · Innovation · Impact</p>
+        <p style="color:rgba(255,255,255,0.6);max-width:560px;margin:0 auto 44px;font-size:1rem;line-height:1.7;">
+            Education, software, games, design, innovation, digital transformation, media, and training — united under one operating system.
+        </p>
+        <div class="hero-actions">
+            <a href="#divisions" class="btn-primary">Explore Our Divisions</a>
+            <a href="/Account/Login" class="btn-ghost">Orbiter Login</a>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="divisions">
+    <div class="section-title">Our Divisions</div>
+    <h2 class="section-heading">Everything We Build, Under One Orbit</h2>
+
+    <div class="divisions-grid">
+        <div class="division-card academy">
+            <div class="division-icon" style="background: var(--co-academy);">🎓</div>
+            <h3>Academy</h3>
+            <p>Education, tutoring, and future-ready skills for every learner.</p>
+        </div>
+        <div class="division-card software">
+            <div class="division-icon" style="background: var(--co-software);">⌨</div>
+            <h3>Software</h3>
+            <p>Custom applications, mobile apps, and enterprise systems.</p>
+        </div>
+        <div class="division-card games">
+            <div class="division-icon" style="background: var(--co-games);">🎮</div>
+            <h3>Games</h3>
+            <p>Game design, development, and interactive experiences.</p>
+        </div>
+        <div class="division-card designs">
+            <div class="division-icon" style="background: var(--co-designs);">✎</div>
+            <h3>Designs</h3>
+            <p>Branding, posters, and creative direction that bring ideas to life.</p>
+        </div>
+        <div class="division-card innovation">
+            <div class="division-icon" style="background: var(--co-innovation);">💡</div>
+            <h3>Innovation Lab</h3>
+            <p>Research, AI exploration, and emerging technology prototypes.</p>
+        </div>
+        <div class="division-card digital">
+            <div class="division-icon" style="background: var(--co-digital);">🌐</div>
+            <h3>Digital Solutions</h3>
+            <p>Digital transformation, business solutions, and systems integration.</p>
+        </div>
+        <div class="division-card mediaworks">
+            <div class="division-icon" style="background: var(--co-mediaworks);">🎬</div>
+            <h3>MediaWorks</h3>
+            <p>Video, photography, content production, and campaigns.</p>
+        </div>
+        <div class="division-card training">
+            <div class="division-icon" style="background: var(--co-training);">🏅</div>
+            <h3>Training & Certification</h3>
+            <p>Professional certifications and career-readiness programs.</p>
+        </div>
+    </div>
+</section>
+
+<section class="values-section" id="values">
+    <div class="section-title">Our Core Values</div>
+    <h2 class="section-heading">What Drives Every Decision We Make</h2>
+
+    <div class="values-grid">
+        <div class="value-item">
+            <span class="value-icon">👁</span>
+            <h4>Clarity</h4>
+            <p>Focus and understanding in everything we do.</p>
+        </div>
+        <div class="value-item">
+            <span class="value-icon">💡</span>
+            <h4>Innovation</h4>
+            <p>Creativity and technology for better solutions.</p>
+        </div>
+        <div class="value-item">
+            <span class="value-icon">🎯</span>
+            <h4>Impact</h4>
+            <p>Meaningful change that improves lives.</p>
+        </div>
+        <div class="value-item">
+            <span class="value-icon">📈</span>
+            <h4>Growth</h4>
+            <p>Continuous learning and improvement.</p>
+        </div>
+        <div class="value-item">
+            <span class="value-icon">🚀</span>
+            <h4>Excellence</h4>
+            <p>Highest quality with integrity and professionalism.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-inner">
+        <div class="section-title" style="color:#4DA9FF;">The Orbit</div>
+        <h2 class="section-heading" style="color:#fff;margin-bottom:16px;">Ready to Work With Us?</h2>
+        <p style="color:rgba(255,255,255,0.6);max-width:560px;margin:0 auto 40px;font-size:1rem;">
+            Whether you're a client, a learner, or a future Orbiter — there's a place for you in the ClearOrbit ecosystem.
+        </p>
+        <div class="hero-actions" style="justify-content:center;">
+            <a href="/Account/Login" class="btn-primary">Login to ClearOrbit OS</a>
+            <a href="mailto:hello@clearorbit.co.za" class="btn-ghost">Get in Touch</a>
+        </div>
+    </div>
+</section>

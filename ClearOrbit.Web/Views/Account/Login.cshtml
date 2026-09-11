@@ -1,0 +1,51 @@
+﻿@model ClearOrbit.Web.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LoginLayout";
+}
+
+<div class="login-wrap">
+    <div class="login-card">
+        <div class="login-brand">
+            <img src="~/img/logo-light.png" alt="ClearOrbit Group" style="height:80px;margin-bottom:16px;" />
+            <h1>Welcome Back, Orbiter</h1>
+            <p>Sign in to ClearOrbit OS</p>
+        </div>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" type="email" autocomplete="username" placeholder="you@clearorbit.co.za" />
+                <span asp-validation-for="Email" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" autocomplete="current-password" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="field-error"></span>
+            </div>
+
+            <div class="form-group-inline">
+                <label class="checkbox">
+                    <input asp-for="RememberMe" type="checkbox" />
+                    <span>Remember me</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%;">Sign In</button>
+        </form>
+
+        <p class="login-back">
+            <a href="/">← Back to clearorbit.co.za</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

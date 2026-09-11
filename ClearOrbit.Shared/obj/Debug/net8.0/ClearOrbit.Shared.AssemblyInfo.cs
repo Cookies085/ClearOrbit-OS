@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClearOrbit.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73f51bb6690c19a67f36eca9a448ed9e0e5ef058")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClearOrbit.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClearOrbit.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

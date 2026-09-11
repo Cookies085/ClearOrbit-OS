@@ -4,10 +4,15 @@ namespace ClearOrbit.Domain.Entities;
 
 public class Division : BaseEntity
 {
-    public string Name { get; set; } = string.Empty; // e.g., Academy, Software
-    public string AccentColor { get; set; } = string.Empty; // e.g., Blue, Cyan
+    public string Name { get; set; } = string.Empty;
+    public string AccentColor { get; set; } = string.Empty;
 
-    // Foreign Key
     public Guid OrganizationId { get; set; }
     public Organization Organization { get; set; } = null!;
+
+    public ICollection<Service> Services { get; set; } = new List<Service>();
+    public ICollection<Project> DeliveredProjects { get; set; } = new List<Project>();
+    public ICollection<Project> RequestedProjects { get; set; } = new List<Project>();
+    public ICollection<Invoice> IssuedInvoices { get; set; } = new List<Invoice>();
+    public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 }

@@ -7,6 +7,6 @@ public class Organization : BaseEntity
     public string Name { get; set; } = "ClearOrbit Group";
     public string Tagline { get; set; } = "Where Clarity Meets Innovation";
 
-    // Navigation Property
     public ICollection<Division> Divisions { get; set; } = new List<Division>();
+    public ICollection<Client> Clients { get; set; } = new List<Client>();
 }

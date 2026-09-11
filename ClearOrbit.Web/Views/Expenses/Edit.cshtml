@@ -1,0 +1,97 @@
+﻿@model ClearOrbit.Web.ViewModels.ExpenseViewModel
+@{
+    ViewData["Title"] = "Edit Expense";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:720px;">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description *</label>
+            <input asp-for="Description" placeholder="e.g., Adobe Creative Cloud subscription" />
+            <span asp-validation-for="Description" class="field-error"></span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Category">Category</label>
+                <select asp-for="Category" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Software</option>
+                    <option value="2">Hardware</option>
+                    <option value="3">Subcontractor</option>
+                    <option value="4">Travel</option>
+                    <option value="5">Marketing</option>
+                    <option value="6">Office</option>
+                    <option value="7">Utilities</option>
+                    <option value="8">Education</option>
+                    <option value="9">Equipment</option>
+                    <option value="99">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseDate">Date *</label>
+                <input asp-for="ExpenseDate" type="date" />
+                <span asp-validation-for="ExpenseDate" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount">Amount *</label>
+                <input asp-for="Amount" type="number" step="0.01" />
+                <span asp-validation-for="Amount" class="field-error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProjectId">Project (optional)</label>
+            <select asp-for="ProjectId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                <option value="">-- No project --</option>
+                @foreach (var p in Model.Projects)
+                {
+                    <option value="@p.Id">@p.Code — @p.Name (@p.DivisionName)</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DivisionId">Division (optional — inherited from project if set)</label>
+            <select asp-for="DivisionId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                <option value="">-- No division --</option>
+                @foreach (var d in Model.Divisions)
+                {
+                    <option value="@d.Id">@d.Name</option>
+                }
+            </select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Currency">Currency</label>
+                <input asp-for="Currency" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Vendor">Vendor</label>
+                <input asp-for="Vendor" placeholder="e.g., Adobe" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Reference">Reference</label>
+                <input asp-for="Reference" placeholder="Invoice #, receipt #" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Notes">Notes</label>
+            <textarea asp-for="Notes" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <a href="/Expenses" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
