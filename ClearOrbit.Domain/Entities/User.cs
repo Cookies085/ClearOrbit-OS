@@ -12,8 +12,8 @@ public class User : BaseEntity
     public string SystemPrefix { get; set; } = "CO";
     public Tutor? TutorProfile { get; set; }
 
-    // Navigation Properties
     public ICollection<Role> Roles { get; set; } = new List<Role>();
     public ICollection<Session> Sessions { get; set; } = new List<Session>();
     public ICollection<TaskItem> AssignedTasks { get; set; } = new List<TaskItem>();
+    public ICollection<AttendanceRecord> RecordedAttendance { get; set; } = new List<AttendanceRecord>();
 }

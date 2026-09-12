@@ -38,6 +38,15 @@ public class AcademyController : Controller
             RecentTutors = tutors.Take(5).ToList(),
             RecentClasses = classes.Take(5).ToList()
         };
+
+        var totalSessions = 0;
+        foreach (var c in classes)
+        {
+            var s = await _api.GetAsync<ApiResult<List<SessionSummaryItem>>>($"/api/Attendance/class/{c.Id}/sessions", Token);
+            totalSessions += (s?.Data ?? new List<SessionSummaryItem>()).Count;
+        }
+        vm.SessionCount = totalSessions;
+
         return View(vm);
     }
 }

@@ -1,0 +1,94 @@
+﻿@model ClearOrbit.Web.ViewModels.TakeAttendanceViewModel
+@{
+    ViewData["Title"] = "Take Attendance";
+    Layout = "_Layout";
+}
+
+@if (TempData["Error"] is string err)
+{
+    <div style="background:#FEE2E2;border-left:4px solid #DC2626;color:#991B1B;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@err</div>
+}
+
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
+        <div>
+            <div style="font-family:monospace;font-size:0.8rem;color:#6B7280;">@Model.ClassCode</div>
+            <h2 style="margin:2px 0 0;font-size:1.35rem;">@Model.ClassName</h2>
+        </div>
+
+        <form method="get" asp-action="Take" asp-route-classId="@Model.ClassId" style="display:flex;gap:12px;align-items:end;">
+            <div>
+                <label style="display:block;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--co-gray-500);font-weight:600;margin-bottom:6px;">Session Date</label>
+                <input type="date" name="date" value="@Model.SessionDate.ToString("yyyy-MM-dd")"
+                       style="padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);background:var(--co-gray-50);" />
+            </div>
+            <button type="submit" class="btn-outline" style="padding:10px 20px;">Load</button>
+        </form>
+    </div>
+
+    @if (Model.Rows.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No active enrollments</h3>
+            <p>Enroll learners in this class before taking attendance.</p>
+            <a href="/Classes/Details/@Model.ClassId" class="btn-primary">Back to Class</a>
+        </div>
+    }
+    else
+    {
+        <form asp-action="Take" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ClassId" />
+            <input type="hidden" asp-for="SessionDate" />
+            <input type="hidden" asp-for="ClassCode" />
+            <input type="hidden" asp-for="ClassName" />
+
+            <table class="co-table">
+                <thead>
+                    <tr>
+                        <th>Learner</th>
+                        <th>Grade</th>
+                        <th style="text-align:center;">Present</th>
+                        <th style="text-align:center;">Absent</th>
+                        <th style="text-align:center;">Late</th>
+                        <th style="text-align:center;">Excused</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Rows.Count; i++)
+                    {
+                        var row = Model.Rows[i];
+                        <tr>
+                            <td>
+                                <input type="hidden" asp-for="Rows[i].LearnerId" />
+                                <input type="hidden" asp-for="Rows[i].LearnerCode" />
+                                <input type="hidden" asp-for="Rows[i].LearnerName" />
+                                <div style="font-weight:600;">@row.LearnerName</div>
+                                <div style="font-family:monospace;font-size:0.72rem;color:#6B7280;">@row.LearnerCode</div>
+                            </td>
+                            <td>@row.GradeLevelName</td>
+                            @foreach (var (statusVal, label) in new[] { (1, "Present"), (2, "Absent"), (3, "Late"), (4, "Excused") })
+                            {
+                                <td style="text-align:center;">
+                                    <input type="radio" name="Rows[@i].Status" value="@statusVal"
+                                           @(row.Status == statusVal ? "checked" : "")
+                                           style="transform:scale(1.4);cursor:pointer;accent-color:var(--co-primary);" />
+                                </td>
+                            }
+                            <td>
+                                <input name="Rows[@i].Notes" value="@row.Notes" placeholder="Optional"
+                                       style="width:100%;padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-family:var(--co-font);font-size:0.85rem;background:var(--co-gray-50);" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div style="display:flex;gap:12px;margin-top:24px;">
+                <button type="submit" class="btn-primary">Save Attendance</button>
+                <a href="/Classes/Details/@Model.ClassId" class="btn-outline">Cancel</a>
+            </div>
+        </form>
+    }
+</div>

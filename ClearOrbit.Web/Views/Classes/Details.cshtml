@@ -162,4 +162,57 @@
     }
 </div>
 
+@{
+    var sessions = ViewData["Sessions"] as List<ClearOrbit.Web.ViewModels.SessionSummaryItem> ?? new();
+}
+
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Attendance Sessions</h3>
+        @if (Model.EnrolledCount > 0)
+        {
+            <a href="/Attendance/Take?classId=@Model.Id" class="btn-primary" style="padding:8px 18px;font-size:0.85rem;">+ Take Attendance</a>
+        }
+    </div>
+
+    @if (sessions.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No attendance recorded yet.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Session</th>
+                    <th style="text-align:center;">Present</th>
+                    <th style="text-align:center;">Absent</th>
+                    <th style="text-align:center;">Late</th>
+                    <th style="text-align:center;">Excused</th>
+                    <th style="text-align:right;">Rate</th>
+                    <th style="text-align:right;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in sessions)
+                {
+                    var rateColor = s.AttendanceRate >= 80 ? "#16A34A"
+                    : s.AttendanceRate >= 60 ? "#F59E0B" : "#DC2626";
+                    <tr>
+                        <td style="font-weight:600;">@s.SessionDate.ToString("ddd, dd MMM yyyy")</td>
+                        <td style="text-align:center;color:#16A34A;font-weight:600;">@s.TotalPresent</td>
+                        <td style="text-align:center;color:#DC2626;font-weight:600;">@s.TotalAbsent</td>
+                        <td style="text-align:center;color:#F59E0B;font-weight:600;">@s.TotalLate</td>
+                        <td style="text-align:center;color:#6B7280;font-weight:600;">@s.TotalExcused</td>
+                        <td style="text-align:right;font-weight:600;color:@rateColor;">@s.AttendanceRate.ToString("F1")%</td>
+                        <td style="text-align:right;">
+                            <a href="/Attendance/Take?classId=@Model.Id&date=@s.SessionDate.ToString("yyyy-MM-dd")" style="font-size:0.8rem;">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
 <a href="/Classes" style="font-size:0.9rem;">← Back to Classes</a>

@@ -100,6 +100,7 @@ public class AcademyWorkspaceViewModel
     public int TutorCount { get; set; }
     public int ClassCount { get; set; }
     public int TotalEnrollments { get; set; }
+    public int SessionCount { get; set; }
     public List<LearnerListItem> RecentLearners { get; set; } = new();
     public List<TutorListItem> RecentTutors { get; set; } = new();
     public List<ClassListItem> RecentClasses { get; set; } = new();
@@ -189,4 +190,63 @@ public class EnrollmentListItem
     public int Status { get; set; }
     public string StatusName { get; set; } = string.Empty;
     public string? Notes { get; set; }
+}
+
+public class AttendanceListItem
+{
+    public Guid Id { get; set; }
+    public Guid ClassId { get; set; }
+    public Guid LearnerId { get; set; }
+    public string LearnerCode { get; set; } = string.Empty;
+    public string LearnerName { get; set; } = string.Empty;
+    public DateTime SessionDate { get; set; }
+    public int Status { get; set; }
+    public string StatusName { get; set; } = string.Empty;
+    public string? Notes { get; set; }
+}
+
+public class SessionSummaryItem
+{
+    public DateTime SessionDate { get; set; }
+    public int TotalPresent { get; set; }
+    public int TotalAbsent { get; set; }
+    public int TotalLate { get; set; }
+    public int TotalExcused { get; set; }
+    public int TotalRecords { get; set; }
+    public decimal AttendanceRate { get; set; }
+}
+
+public class TakeAttendanceViewModel
+{
+    public Guid ClassId { get; set; }
+    public string ClassCode { get; set; } = string.Empty;
+    public string ClassName { get; set; } = string.Empty;
+    public DateTime SessionDate { get; set; } = DateTime.UtcNow.Date;
+    public List<TakeAttendanceRow> Rows { get; set; } = new();
+}
+
+public class TakeAttendanceRow
+{
+    public Guid LearnerId { get; set; }
+    public string LearnerCode { get; set; } = string.Empty;
+    public string LearnerName { get; set; } = string.Empty;
+    public string? GradeLevelName { get; set; }
+    public int Status { get; set; } = 1; // default Present
+    public string? Notes { get; set; }
+}
+
+public class AttendanceHubRow
+{
+    public Guid ClassId { get; set; }
+    public string ClassCode { get; set; } = string.Empty;
+    public string ClassName { get; set; } = string.Empty;
+    public string Subject { get; set; } = string.Empty;
+    public string GradeLevelName { get; set; } = string.Empty;
+    public string TutorName { get; set; } = string.Empty;
+    public string DayOfWeekName { get; set; } = string.Empty;
+    public string StartTime { get; set; } = string.Empty;
+    public int EnrolledCount { get; set; }
+    public int SessionCount { get; set; }
+    public decimal AttendanceRate { get; set; }
+    public DateTime? LastSessionDate { get; set; }
 }

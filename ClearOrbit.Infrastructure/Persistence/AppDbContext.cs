@@ -30,6 +30,7 @@ public class AppDbContext : DbContext
     public DbSet<Tutor> Tutors => Set<Tutor>();
     public DbSet<Class> Classes => Set<Class>();
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    public DbSet<AttendanceRecord> AttendanceRecords => Set<AttendanceRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -9,13 +9,12 @@ public class Class : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 
-    public string Subject { get; set; } = string.Empty;   // e.g., "Mathematics"
+    public string Subject { get; set; } = string.Empty;   
     public GradeLevel GradeLevel { get; set; } = GradeLevel.NotApplicable;
 
     public Guid TutorId { get; set; }
     public Tutor Tutor { get; set; } = null!;
 
-    // Schedule
     public DayOfWeekOption DayOfWeek { get; set; } = DayOfWeekOption.Monday;
     public TimeOnly StartTime { get; set; }
     public TimeOnly EndTime { get; set; }
@@ -32,4 +31,5 @@ public class Class : BaseEntity
     public ClassStatus Status { get; set; } = ClassStatus.Draft;
 
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+    public ICollection<AttendanceRecord> AttendanceRecords { get; set; } = new List<AttendanceRecord>();
 }

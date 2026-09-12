@@ -22,6 +22,51 @@ namespace ClearOrbit.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.AttendanceRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LearnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("RecordedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SessionDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LearnerId");
+
+                    b.HasIndex("RecordedByUserId");
+
+                    b.HasIndex("ClassId", "LearnerId", "SessionDate")
+                        .IsUnique();
+
+                    b.ToTable("AttendanceRecords", (string)null);
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1176,6 +1221,32 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.AttendanceRecord", b =>
+                {
+                    b.HasOne("ClearOrbit.Domain.Entities.Class", "Class")
+                        .WithMany("AttendanceRecords")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Learner", "Learner")
+                        .WithMany("AttendanceRecords")
+                        .HasForeignKey("LearnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.User", "RecordedByUser")
+                        .WithMany("RecordedAttendance")
+                        .HasForeignKey("RecordedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Learner");
+
+                    b.Navigation("RecordedByUser");
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Class", b =>
                 {
                     b.HasOne("ClearOrbit.Domain.Entities.Tutor", "Tutor")
@@ -1470,6 +1541,8 @@ namespace ClearOrbit.Infrastructure.Migrations
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Class", b =>
                 {
+                    b.Navigation("AttendanceRecords");
+
                     b.Navigation("Enrollments");
                 });
 
@@ -1504,6 +1577,8 @@ namespace ClearOrbit.Infrastructure.Migrations
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Learner", b =>
                 {
+                    b.Navigation("AttendanceRecords");
+
                     b.Navigation("Enrollments");
                 });
 
@@ -1536,6 +1611,8 @@ namespace ClearOrbit.Infrastructure.Migrations
             modelBuilder.Entity("ClearOrbit.Domain.Entities.User", b =>
                 {
                     b.Navigation("AssignedTasks");
+
+                    b.Navigation("RecordedAttendance");
 
                     b.Navigation("Sessions");
 

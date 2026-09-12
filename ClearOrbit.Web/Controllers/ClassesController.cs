@@ -29,11 +29,13 @@ public class ClassesController : Controller
 
         var enrollResp = await _api.GetAsync<ApiResult<List<EnrollmentListItem>>>($"/api/Classes/{id}/enrollments", Token);
         var learnersResp = await _api.GetAsync<ApiResult<List<LearnerListItem>>>("/api/Learners", Token);
+        var sessionsResp = await _api.GetAsync<ApiResult<List<SessionSummaryItem>>>($"/api/Attendance/class/{id}/sessions", Token);
 
         ViewData["PageTitle"] = classResp.Data.Code;
         ViewData["PageSubtitle"] = classResp.Data.Name;
         ViewData["Enrollments"] = enrollResp?.Data ?? new List<EnrollmentListItem>();
         ViewData["AllLearners"] = learnersResp?.Data ?? new List<LearnerListItem>();
+        ViewData["Sessions"] = sessionsResp?.Data ?? new List<SessionSummaryItem>();
         return View(classResp.Data);
     }
 

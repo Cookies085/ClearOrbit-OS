@@ -26,4 +26,5 @@ public class Learner : BaseEntity
     public DateTime EnrolledOn { get; set; } = DateTime.UtcNow;
     public string? Notes { get; set; }
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+    public ICollection<AttendanceRecord> AttendanceRecords { get; set; } = new List<AttendanceRecord>();
 }
