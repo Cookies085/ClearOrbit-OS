@@ -64,7 +64,11 @@
                 </a>
                 <a class="app-nav-item @(currentController == "Attendance" ? "active" : "")" 
                    href="/Attendance">
-                    <span class="icon">✓</span> Attendance
+                    <span class="icon">◆</span> Attendance
+                </a>
+                <a class="app-nav-item @(currentController == "Assessments" ? "active" : "")" 
+                   href="/Assessments">
+                    <span class="icon">◆</span> Assessments
                 </a>
                 <a class="app-nav-item" href="#"><span class="icon">◆</span> Software</a>
                 <a class="app-nav-item" href="#"><span class="icon">◆</span> Games</a>
@@ -88,7 +92,10 @@
                    href="/Expenses">
                     <span class="icon">◆</span> Expenses
                 </a>
-                <a class="app-nav-item" href="#"><span class="icon">◆</span> Reports</a>
+                <a class="app-nav-item @(currentController == "Reports" ? "active" : "")" 
+                   href="/Reports">
+                    <span class="icon">◆</span> Reports
+                </a>
                 <a class="app-nav-item" href="#"><span class="icon">◆</span> Admin</a>
             </nav>
 

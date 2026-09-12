@@ -9,30 +9,34 @@
         : 1;
 }
 
-<div class="hero-card">
-    <div class="hero-card-inner">
-        <div style="font-size:0.72rem;letter-spacing:4px;color:#4DA9FF;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Welcome to</div>
-        <h2 style="font-size:2rem;font-weight:700;margin:0 0 10px;letter-spacing:-1px;color:#fff;">ClearOrbit OS</h2>
-        <p style="color:rgba(255,255,255,0.7);margin:0;max-width:600px;font-size:0.95rem;">
+<div class="division-hero">
+    <div class="division-hero-inner">
+        <div class="division-hero-header">
+            <div class="division-hero-icon" style="background: linear-gradient(135deg, var(--co-primary), var(--co-electric));">◈</div>
+            <div>
+                <div class="division-hero-eyebrow">Welcome to</div>
+                <h2 class="division-hero-title">ClearOrbit OS</h2>
+            </div>
+        </div>
+        <p class="division-hero-tagline">
             Your group at a glance. Clients, projects, invoices, expenses — all connected.
         </p>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:24px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);">
+        <div class="division-hero-stats">
             <div>
-                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Clients</div>
-                <div style="font-size:1.75rem;font-weight:700;color:#fff;letter-spacing:-1px;">@Model.ClientCount</div>
+                <div class="division-hero-stat-label">Clients</div>
+                <div class="division-hero-stat-value">@Model.ClientCount</div>
             </div>
             <div>
-                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Projects</div>
-                <div style="font-size:1.75rem;font-weight:700;color:#fff;letter-spacing:-1px;">@Model.TotalProjectCount</div>
+                <div class="division-hero-stat-label">Projects</div>
+                <div class="division-hero-stat-value">@Model.TotalProjectCount</div>
             </div>
             <div>
-                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Open Tasks</div>
-                <div style="font-size:1.75rem;font-weight:700;color:#fff;letter-spacing:-1px;">@Model.OpenTaskCount</div>
+                <div class="division-hero-stat-label">Open Tasks</div>
+                <div class="division-hero-stat-value">@Model.OpenTaskCount</div>
             </div>
             <div>
-                <div style="font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Overdue</div>
-                <div style="font-size:1.75rem;font-weight:700;color:@(Model.OverdueInvoiceCount > 0 ? "#FCA5A5" : "#fff");letter-spacing:-1px;">@Model.OverdueInvoiceCount</div>
+                <div class="division-hero-stat-label">Overdue</div>
+                <div class="division-hero-stat-value" style="color:@(Model.OverdueInvoiceCount > 0 ? "#FCA5A5" : "#fff");">@Model.OverdueInvoiceCount</div>
             </div>
         </div>
     </div>

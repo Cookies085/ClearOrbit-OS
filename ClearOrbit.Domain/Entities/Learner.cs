@@ -27,4 +27,5 @@ public class Learner : BaseEntity
     public string? Notes { get; set; }
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     public ICollection<AttendanceRecord> AttendanceRecords { get; set; } = new List<AttendanceRecord>();
+    public ICollection<Result> Results { get; set; } = new List<Result>();
 }

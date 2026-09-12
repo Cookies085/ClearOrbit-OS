@@ -1,0 +1,96 @@
+﻿@model List<ClearOrbit.Web.ViewModels.AssessmentListItem>
+@{
+    ViewData["Title"] = "Assessments";
+    Layout = "_Layout";
+}
+
+@section TopbarActions {
+    <a href="/Assessments/Create" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">+ New Assessment</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No assessments yet</h3>
+            <p>Create a quiz, test, or exam for one of your classes.</p>
+            <a href="/Assessments/Create" class="btn-primary">Create Assessment</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Assessment</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Max</th>
+                    <th style="text-align:center;">Recorded</th>
+                    <th style="text-align:center;">Avg</th>
+                    <th>Status</th>
+                    <th style="text-align:right;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    var statusColor = a.StatusName switch
+                    {
+                        "Draft" => "#6B7280",
+                        "Scheduled" => "#3B82F6",
+                        "Completed" => "#16A34A",
+                        "Cancelled" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    var avgColor = a.AveragePercentage >= 70 ? "#16A34A"
+                    : a.AveragePercentage >= 50 ? "#F59E0B"
+                    : a.AveragePercentage > 0 ? "#DC2626"
+                    : "#9CA3AF";
+
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@a.Code</td>
+                        <td>
+                            <a href="/Assessments/Record/@a.Id" style="font-weight:600;color:var(--co-deep);">@a.Title</a>
+                            @if (!string.IsNullOrWhiteSpace(a.Description))
+                            {
+                                <div style="font-size:0.75rem;color:#6B7280;">@a.Description</div>
+                            }
+                        </td>
+                        <td>
+                            <div style="font-family:monospace;font-size:0.72rem;color:#6B7280;">@a.ClassCode</div>
+                            <div style="font-size:0.82rem;">@a.ClassName</div>
+                        </td>
+                        <td><span class="badge badge-blue">@a.TypeName</span></td>
+                        <td>@a.ScheduledDate.ToString("yyyy-MM-dd")</td>
+                        <td style="font-weight:600;">@a.MaxScore.ToString("N0")</td>
+                        <td style="text-align:center;">@a.ResultsRecorded</td>
+                        <td style="text-align:center;font-weight:600;color:@avgColor;">
+                            @if (a.ResultsRecorded == 0)
+                            {
+                                <span>—</span>
+                            }
+                            else
+                            {
+                                <span>@a.AveragePercentage.ToString("F1")%</span>
+                            }
+                        </td>
+                        <td><span class="badge" style="background:@(statusColor)22;color:@statusColor;">@a.StatusName</span></td>
+                        <td style="text-align:right;white-space:nowrap;">
+                            <a href="/Assessments/Record/@a.Id" style="font-size:0.82rem;">Record</a>
+                            <span style="color:#E5E7EB;margin:0 6px;">·</span>
+                            <a href="/Assessments/Edit/@a.Id" style="font-size:0.82rem;">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

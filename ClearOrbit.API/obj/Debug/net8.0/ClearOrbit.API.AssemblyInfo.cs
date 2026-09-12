@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClearOrbit.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ffe1efe0d031db3c2e6e40f0ad4797799d53656")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd11a3daf77b653a5b2c1718bc202686b1f0cd57")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClearOrbit.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClearOrbit.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

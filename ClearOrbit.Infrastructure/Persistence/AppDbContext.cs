@@ -31,6 +31,8 @@ public class AppDbContext : DbContext
     public DbSet<Class> Classes => Set<Class>();
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<AttendanceRecord> AttendanceRecords => Set<AttendanceRecord>();
+    public DbSet<Assessment> Assessments => Set<Assessment>();
+    public DbSet<Result> Results => Set<Result>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

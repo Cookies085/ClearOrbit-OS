@@ -30,6 +30,9 @@ public class ClassesController : Controller
         var enrollResp = await _api.GetAsync<ApiResult<List<EnrollmentListItem>>>($"/api/Classes/{id}/enrollments", Token);
         var learnersResp = await _api.GetAsync<ApiResult<List<LearnerListItem>>>("/api/Learners", Token);
         var sessionsResp = await _api.GetAsync<ApiResult<List<SessionSummaryItem>>>($"/api/Attendance/class/{id}/sessions", Token);
+        var assessmentsResp = await _api.GetAsync<ApiResult<List<AssessmentListItem>>>(
+        $"/api/Assessments/class/{id}", Token);
+        ViewData["Assessments"] = assessmentsResp?.Data ?? new List<AssessmentListItem>();
 
         ViewData["PageTitle"] = classResp.Data.Code;
         ViewData["PageSubtitle"] = classResp.Data.Name;

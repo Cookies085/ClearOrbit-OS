@@ -163,6 +163,62 @@
 </div>
 
 @{
+    var assessments = ViewData["Assessments"] as List<ClearOrbit.Web.ViewModels.AssessmentListItem> ?? new();
+}
+
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Assessments</h3>
+        <a href="/Assessments/Create?classId=@Model.Id" class="btn-primary" style="padding:8px 18px;font-size:0.85rem;">+ New Assessment</a>
+    </div>
+
+    @if (assessments.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No assessments created yet.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th style="text-align:center;">Max</th>
+                    <th style="text-align:center;">Recorded</th>
+                    <th style="text-align:center;">Avg</th>
+                    <th style="text-align:right;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in assessments)
+                {
+                    var avgColor = a.AveragePercentage >= 70 ? "#16A34A"
+                        : a.AveragePercentage >= 50 ? "#F59E0B"
+                        : a.AveragePercentage > 0 ? "#DC2626" : "#9CA3AF";
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@a.Code</td>
+                        <td style="font-weight:600;">@a.Title</td>
+                        <td><span class="badge badge-blue">@a.TypeName</span></td>
+                        <td>@a.ScheduledDate.ToString("yyyy-MM-dd")</td>
+                        <td style="text-align:center;">@a.MaxScore.ToString("N0")</td>
+                        <td style="text-align:center;">@a.ResultsRecorded</td>
+                        <td style="text-align:center;font-weight:600;color:@avgColor;">
+                            @if (a.ResultsRecorded == 0) { <span>—</span> }
+                            else { <span>@a.AveragePercentage.ToString("F1")%</span> }
+                        </td>
+                        <td style="text-align:right;">
+                            <a href="/Assessments/Record/@a.Id" style="font-size:0.82rem;">Record</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@{
     var sessions = ViewData["Sessions"] as List<ClearOrbit.Web.ViewModels.SessionSummaryItem> ?? new();
 }
 

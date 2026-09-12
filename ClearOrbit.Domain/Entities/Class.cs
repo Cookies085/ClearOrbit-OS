@@ -32,4 +32,5 @@ public class Class : BaseEntity
 
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     public ICollection<AttendanceRecord> AttendanceRecords { get; set; } = new List<AttendanceRecord>();
+    public ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();
 }

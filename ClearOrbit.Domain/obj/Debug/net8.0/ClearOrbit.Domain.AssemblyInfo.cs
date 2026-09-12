@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClearOrbit.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a85fc6d92155e1b4290e5a79e43bee4f9eb30fa2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd11a3daf77b653a5b2c1718bc202686b1f0cd57")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClearOrbit.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClearOrbit.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

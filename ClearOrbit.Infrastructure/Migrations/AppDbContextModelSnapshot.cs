@@ -22,6 +22,64 @@ namespace ClearOrbit.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Assessment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MaxScore")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ScheduledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Weight")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Assessments", (string)null);
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.AttendanceRecord", b =>
                 {
                     b.Property<Guid>("Id")
@@ -919,6 +977,49 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.ToTable("Projects", (string)null);
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Result", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssessmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LearnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("RecordedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Score")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LearnerId");
+
+                    b.HasIndex("RecordedByUserId");
+
+                    b.HasIndex("AssessmentId", "LearnerId")
+                        .IsUnique();
+
+                    b.ToTable("Results", (string)null);
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1221,6 +1322,17 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Assessment", b =>
+                {
+                    b.HasOne("ClearOrbit.Domain.Entities.Class", "Class")
+                        .WithMany("Assessments")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.AttendanceRecord", b =>
                 {
                     b.HasOne("ClearOrbit.Domain.Entities.Class", "Class")
@@ -1431,6 +1543,32 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Result", b =>
+                {
+                    b.HasOne("ClearOrbit.Domain.Entities.Assessment", "Assessment")
+                        .WithMany("Results")
+                        .HasForeignKey("AssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Learner", "Learner")
+                        .WithMany("Results")
+                        .HasForeignKey("LearnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.User", "RecordedByUser")
+                        .WithMany("RecordedResults")
+                        .HasForeignKey("RecordedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Assessment");
+
+                    b.Navigation("Learner");
+
+                    b.Navigation("RecordedByUser");
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Service", b =>
                 {
                     b.HasOne("ClearOrbit.Domain.Entities.Division", "Division")
@@ -1539,8 +1677,15 @@ namespace ClearOrbit.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Assessment", b =>
+                {
+                    b.Navigation("Results");
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Class", b =>
                 {
+                    b.Navigation("Assessments");
+
                     b.Navigation("AttendanceRecords");
 
                     b.Navigation("Enrollments");
@@ -1580,6 +1725,8 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("AttendanceRecords");
 
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Organization", b =>
@@ -1613,6 +1760,8 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("AssignedTasks");
 
                     b.Navigation("RecordedAttendance");
+
+                    b.Navigation("RecordedResults");
 
                     b.Navigation("Sessions");
 
