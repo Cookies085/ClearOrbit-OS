@@ -1,0 +1,130 @@
+﻿@model ClearOrbit.Web.ViewModels.FeatureViewModel
+@{
+    ViewData["Title"] = "Edit Feature";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:800px;">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Status">Status *</label>
+                <select asp-for="Status" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Proposed</option>
+                    <option value="2">Approved</option>
+                    <option value="3">In Progress</option>
+                    <option value="4">Testing</option>
+                    <option value="5">Shipped</option>
+                    <option value="6">Rejected</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Code">Feature Code</label>
+                <input asp-for="Code" readonly
+                       style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:monospace;font-size:0.9rem;background:var(--co-gray-100);color:#6B7280;cursor:not-allowed;" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Title">Feature Title *</label>
+            <input asp-for="Title" placeholder="e.g., Multi-factor authentication" />
+            <span asp-validation-for="Title" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" rows="4" placeholder="What needs to be built and why."
+                      style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="DivisionId">Division *</label>
+                <select asp-for="DivisionId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="">-- Select division --</option>
+                    @foreach (var d in Model.Divisions)
+                    {
+                        <option value="@d.Id">@d.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="DivisionId" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Source">Source</label>
+                <select asp-for="Source" id="sourceSelect" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Client</option>
+                    <option value="2">Internal</option>
+                    <option value="3">Market</option>
+                    <option value="4">Regulatory</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="clientGroup">
+            <label asp-for="ClientId">Client</label>
+            <select asp-for="ClientId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                <option value="">-- Select client --</option>
+                @foreach (var c in Model.Clients)
+                {
+                    <option value="@c.Id">@c.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProjectId">Project (optional)</label>
+            <select asp-for="ProjectId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                <option value="">-- No project --</option>
+                @foreach (var p in Model.Projects)
+                {
+                    <option value="@p.Id">@p.Code — @p.Name (@p.DivisionName)</option>
+                }
+            </select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Priority">Priority</label>
+                <select asp-for="Priority" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Low</option>
+                    <option value="2">Normal</option>
+                    <option value="3">High</option>
+                    <option value="4">Critical</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedEffort">Estimated Effort</label>
+                <input asp-for="EstimatedEffort" type="number" placeholder="—" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualEffort">Actual Effort</label>
+                <input asp-for="ActualEffort" type="number" placeholder="—" />
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetDate">Target Date</label>
+                <input asp-for="TargetDate" type="date" />
+            </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <a href="/Features" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const src = document.getElementById('sourceSelect');
+            const clientGrp = document.getElementById('clientGroup');
+            function refresh() { clientGrp.style.display = src.value === '1' ? '' : 'none'; }
+            src.addEventListener('change', refresh);
+            refresh();
+        })();
+    </script>
+}

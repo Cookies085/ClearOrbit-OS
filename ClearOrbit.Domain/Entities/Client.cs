@@ -17,4 +17,5 @@ public class Client : BaseEntity
     public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
     public ICollection<Project> Projects { get; set; } = new List<Project>();
     public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+    public ICollection<Feature> RequestedFeatures { get; set; } = new List<Feature>();
 }

@@ -1,0 +1,314 @@
+﻿@model ClearOrbit.Web.ViewModels.ProjectListItem
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "_Layout";
+
+    var features = ViewData["Features"] as List<ClearOrbit.Web.ViewModels.FeatureListItem> ?? new();
+    var bugs = ViewData["Bugs"] as List<ClearOrbit.Web.ViewModels.BugListItem> ?? new();
+    var releases = ViewData["Releases"] as List<ClearOrbit.Web.ViewModels.ReleaseListItem> ?? new();
+    var invoices = ViewData["Invoices"] as List<ClearOrbit.Web.ViewModels.InvoiceListItem> ?? new();
+    var expenses = ViewData["Expenses"] as List<ClearOrbit.Web.ViewModels.ExpenseListItem> ?? new();
+
+    var invoicedTotal = invoices.Where(i => i.StatusName != "Cancelled").Sum(i => i.Total);
+    var paidTotal = invoices.Where(i => i.StatusName != "Cancelled").Sum(i => i.AmountPaid);
+    var balanceTotal = invoices.Where(i => i.StatusName != "Cancelled").Sum(i => i.BalanceDue);
+    var expensesTotal = expenses.Sum(e => e.Amount);
+
+    var statusColor = Model.StatusName switch
+    {
+        "Draft" => "#6B7280",
+        "Active" => "#16A34A",
+        "OnHold" => "#F59E0B",
+        "Completed" => "#1E90FF",
+        "Cancelled" => "#9CA3AF",
+        _ => "#6B7280"
+    };
+    var statusLabel = Model.StatusName switch
+    {
+        "OnHold" => "On Hold",
+        _ => Model.StatusName
+    };
+}
+
+@section TopbarActions {
+    <a href="/Projects/Edit/@Model.Id" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">Edit Project</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<!-- Hero -->
+<div class="division-hero" style="--hero-accent: @Model.DivisionAccent; --hero-accent-soft: @(Model.DivisionAccent)44; --hero-accent-glow: @(Model.DivisionAccent)88;">
+    <div class="division-hero-inner">
+
+        <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
+            <div>
+                <div class="division-hero-eyebrow">@Model.Code</div>
+                <h2 style="font-size:1.9rem;font-weight:700;color:#fff;letter-spacing:-0.5px;margin:8px 0 6px;">@Model.Name</h2>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+                    <span class="badge" style="background:@(statusColor)33;color:#fff;border:1px solid @(statusColor)55;padding:5px 14px;">@statusLabel</span>
+                    @if (Model.TypeName == "Internal")
+                    {
+                        <span class="badge" style="background:rgba(139,92,246,0.25);color:#fff;border:1px solid rgba(139,92,246,0.5);padding:5px 14px;">Internal</span>
+                    }
+                    <span class="badge" style="background:@(Model.DivisionAccent)33;color:#fff;border:1px solid @(Model.DivisionAccent)55;padding:5px 14px;">@Model.DivisionName</span>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <p style="color:rgba(255,255,255,0.75);margin:20px 0 0;max-width:720px;font-size:0.95rem;line-height:1.7;">
+                @Model.Description
+            </p>
+        }
+
+        <div class="division-hero-stats" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));">
+            <div>
+                <div class="division-hero-stat-label">Client</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.ClientName ?? Model.RequestingDivisionName ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Budget</div>
+                <div class="division-hero-stat-value" style="font-size:1.15rem;">
+                    @if (Model.Budget.HasValue)
+                    {
+                        @($"{Model.Currency} {Model.Budget.Value:N0}")
+                    }
+                    else
+                    {
+                        <span style="opacity:0.4;">—</span>
+                    }
+                </div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Start</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.StartDate?.ToString("dd MMM") ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Due</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.DueDate?.ToString("dd MMM") ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Features</div>
+                <div class="division-hero-stat-value">@features.Count</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Open Bugs</div>
+                <div class="division-hero-stat-value" style="color:@(bugs.Count(b => b.StatusName == "Open" || b.StatusName == "InProgress") > 0 ? "#FCD34D" : "#fff");">
+                    @bugs.Count(b => b.StatusName == "Open" || b.StatusName == "InProgress")
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Financials -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:24px;">
+    <div class="stat-card">
+        <div class="stat-label">Invoiced</div>
+        <div class="stat-value" style="color:var(--co-deep);font-size:1.6rem;">@Model.Currency @invoicedTotal.ToString("N0")</div>
+        <div class="stat-sub">@invoices.Count invoice@(invoices.Count == 1 ? "" : "s")</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Paid</div>
+        <div class="stat-value" style="color:#16A34A;font-size:1.6rem;">@Model.Currency @paidTotal.ToString("N0")</div>
+        <div class="stat-sub">Collected</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Outstanding</div>
+        <div class="stat-value" style="color:@(balanceTotal > 0 ? "#F59E0B" : "#16A34A");font-size:1.6rem;">@Model.Currency @balanceTotal.ToString("N0")</div>
+        <div class="stat-sub">Awaiting payment</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Expenses</div>
+        <div class="stat-value" style="color:#DC2626;font-size:1.6rem;">@Model.Currency @expensesTotal.ToString("N0")</div>
+        <div class="stat-sub">@expenses.Count entr@(expenses.Count == 1 ? "y" : "ies")</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Net Profit</div>
+        <div class="stat-value" style="color:@(paidTotal - expensesTotal >= 0 ? "#16A34A" : "#DC2626");font-size:1.6rem;">
+            @Model.Currency @((paidTotal - expensesTotal).ToString("N0"))
+        </div>
+        <div class="stat-sub">Paid − Expenses</div>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Features (@features.Count)</h3>
+        <a href="/Features/Create?projectId=@Model.Id" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Feature</a>
+    </div>
+
+    @if (features.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No features yet for this project.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Feature</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in features)
+                {
+                    var fsColor = f.StatusName switch
+                    {
+                        "Proposed" => "#6B7280", "Approved" => "#3B82F6",
+                        "InProgress" => "#8B5CF6", "Testing" => "#F59E0B",
+                        "Shipped" => "#16A34A", "Rejected" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@f.Code</td>
+                        <td><a href="/Features/Details/@f.Id" style="font-weight:600;color:var(--co-deep);">@f.Title</a></td>
+                        <td>@f.PriorityName</td>
+                        <td><span class="badge" style="background:@(fsColor)22;color:@fsColor;">@f.StatusName</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Bugs -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Bugs (@bugs.Count)</h3>
+        <a href="/Bugs/Create?projectId=@Model.Id" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ Report Bug</a>
+    </div>
+
+    @if (bugs.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No bugs reported on this project.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Bug</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in bugs)
+                {
+                    var sevColor = b.SeverityName switch
+                    {
+                        "Trivial" => "#9CA3AF", "Minor" => "#3B82F6",
+                        "Major" => "#F59E0B", "Critical" => "#DC2626",
+                        "Blocker" => "#7F1D1D", _ => "#6B7280"
+                    };
+                    var bStatusColor = b.StatusName switch
+                    {
+                        "Open" => "#DC2626", "InProgress" => "#F59E0B",
+                        "Fixed" => "#3B82F6", "Verified" => "#16A34A",
+                        "Closed" => "#9CA3AF", _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@b.Code</td>
+                        <td><a href="/Bugs/Details/@b.Id" style="font-weight:600;color:var(--co-deep);">@b.Title</a></td>
+                        <td><span class="badge" style="background:@(sevColor)22;color:@sevColor;">@b.SeverityName</span></td>
+                        <td><span class="badge" style="background:@(bStatusColor)22;color:@bStatusColor;">@b.StatusName</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Releases -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Releases (@releases.Count)</h3>
+        <a href="/Releases/Create?projectId=@Model.Id" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Release</a>
+    </div>
+
+    @if (releases.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No releases yet.</p>
+    }
+    else
+    {
+        <div style="display:flex;flex-direction:column;gap:8px;">
+            @foreach (var r in releases)
+            {
+                var relStatusColor = r.StatusName switch
+                {
+                    "Planning" => "#6B7280", "InDevelopment" => "#8B5CF6",
+                    "InTesting" => "#F59E0B", "Released" => "#16A34A",
+                    "Cancelled" => "#9CA3AF", _ => "#6B7280"
+                };
+                <a href="/Releases/Details/@r.Id" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--co-light);border-radius:10px;text-decoration:none;">
+                    <div>
+                        <span style="font-family:monospace;font-weight:700;color:var(--co-electric);">@r.Version</span>
+                        <span style="margin-left:12px;color:var(--co-deep);font-weight:500;">@r.Name</span>
+                    </div>
+                    <span class="badge" style="background:@(relStatusColor)22;color:@relStatusColor;">@r.StatusName</span>
+                </a>
+            }
+        </div>
+    }
+</div>
+
+<!-- Invoices -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Invoices (@invoices.Count)</h3>
+        <a href="/Invoices/Create" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Invoice</a>
+    </div>
+
+    @if (invoices.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No invoices yet.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Issued</th>
+                    <th style="text-align:right;">Total</th>
+                    <th style="text-align:right;">Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in invoices)
+                {
+                    var iStatusColor = i.StatusName switch
+                    {
+                        "Draft" => "#6B7280", "Sent" => "#3B82F6",
+                        "PartiallyPaid" => "#F59E0B", "Paid" => "#16A34A",
+                        "Cancelled" => "#9CA3AF", _ => "#6B7280"
+                    };
+                    <tr>
+                        <td><a href="/Invoices/Details/@i.Id" style="font-family:monospace;font-size:0.8rem;">@i.Code</a></td>
+                        <td>@i.IssueDate.ToString("yyyy-MM-dd")</td>
+                        <td style="text-align:right;font-weight:600;">@i.Currency @i.Total.ToString("N0")</td>
+                        <td style="text-align:right;font-weight:600;color:@(i.BalanceDue > 0 ? "#F59E0B" : "#16A34A");">
+                            @i.Currency @i.BalanceDue.ToString("N0")
+                        </td>
+                        <td><span class="badge" style="background:@(iStatusColor)22;color:@iStatusColor;">@i.StatusName</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<a href="/Projects" style="font-size:0.9rem;">← Back to Projects</a>

@@ -40,4 +40,7 @@ public class Project : BaseEntity
     public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
     public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+    public ICollection<Feature> Features { get; set; } = new List<Feature>();
+    public ICollection<Bug> Bugs { get; set; } = new List<Bug>();
+    public ICollection<Release> Releases { get; set; } = new List<Release>();
 }

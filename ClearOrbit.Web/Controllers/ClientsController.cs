@@ -85,6 +85,10 @@ public class ClientsController : Controller
         ViewData["PageSubtitle"] = "Client overview";
         ViewData["Contacts"] = contactsResp?.Data ?? new List<ContactListItem>();
 
+        var featuresResp = await _api.GetAsync<ApiResult<List<FeatureListItem>>>("/api/Features", Token);
+        var allFeatures = featuresResp?.Data ?? new List<FeatureListItem>();
+        ViewData["Features"] = allFeatures.Where(f => f.ClientId == id.Value).ToList();
+
         var allProjects = projectsResp?.Data ?? new List<ProjectListItem>();
         ViewData["Projects"] = allProjects.Where(p => p.ClientId == id.Value).ToList();
 

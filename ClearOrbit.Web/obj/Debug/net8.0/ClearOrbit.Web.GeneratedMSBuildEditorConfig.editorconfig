@@ -52,6 +52,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0ZW5kYW5jZVxUYWtlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Bugs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVnc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Bugs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVnc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Bugs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVnc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Bugs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVnc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Classes/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhc3Nlc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -112,6 +128,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Features/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVhdHVyZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Features/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVhdHVyZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Features/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVhdHVyZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Features/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVhdHVyZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -156,12 +188,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Projects/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Projects/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Projects/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Releases/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsZWFzZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Releases/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsZWFzZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Releases/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsZWFzZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Releases/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsZWFzZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Reports/Index.cshtml]
@@ -194,6 +246,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Software/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29mdHdhcmVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bhung/Desktop/ClearOrbit/ClearOrbit.Web/Views/Tasks/Create.cshtml]

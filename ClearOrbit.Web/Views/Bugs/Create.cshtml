@@ -1,0 +1,110 @@
+﻿@model ClearOrbit.Web.ViewModels.BugViewModel
+@{
+    ViewData["Title"] = "New Bug";
+    Layout = "_Layout";
+}
+
+<div class="co-card" style="max-width:800px;">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Title">Bug Title *</label>
+            <input asp-for="Title" placeholder="e.g., Login redirects to blank page on Safari" />
+            <span asp-validation-for="Title" class="field-error"></span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="DivisionId">Division *</label>
+                <select asp-for="DivisionId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="">-- Select division --</option>
+                    @foreach (var d in Model.Divisions)
+                    {
+                        <option value="@d.Id">@d.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="DivisionId" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Severity">Severity</label>
+                <select asp-for="Severity" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Trivial</option>
+                    <option value="2">Minor</option>
+                    <option value="3" selected>Major</option>
+                    <option value="4">Critical</option>
+                    <option value="5">Blocker</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="ProjectId">Project (optional)</label>
+                <select asp-for="ProjectId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="">-- No project --</option>
+                    @foreach (var p in Model.Projects)
+                    {
+                        <option value="@p.Id">@p.Code — @p.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeatureId">Feature (optional)</label>
+                <select asp-for="FeatureId" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="">-- No feature --</option>
+                    @foreach (var f in Model.Features)
+                    {
+                        <option value="@f.Id">@f.Code — @f.Title</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="Priority">Priority</label>
+                <select asp-for="Priority" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);">
+                    <option value="1">Low</option>
+                    <option value="2" selected>Normal</option>
+                    <option value="3">High</option>
+                    <option value="4">Urgent</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <h3 style="margin:24px 0 12px;font-size:0.95rem;color:var(--co-deep);">Reproduction</h3>
+
+        <div class="form-group">
+            <label asp-for="StepsToReproduce">Steps to Reproduce</label>
+            <textarea asp-for="StepsToReproduce" rows="4" placeholder="1. Do this&#10;2. Then this&#10;3. Bug appears"
+                      style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+                <label asp-for="ExpectedBehavior">Expected Behavior</label>
+                <textarea asp-for="ExpectedBehavior" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualBehavior">Actual Behavior</label>
+                <textarea asp-for="ActualBehavior" rows="3" style="width:100%;padding:13px 16px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:var(--co-font);font-size:0.95rem;background:var(--co-gray-50);"></textarea>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <button type="submit" class="btn-primary">Report Bug</button>
+            <a href="/Bugs" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

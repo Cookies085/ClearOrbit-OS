@@ -15,4 +15,7 @@ public class Division : BaseEntity
     public ICollection<Project> RequestedProjects { get; set; } = new List<Project>();
     public ICollection<Invoice> IssuedInvoices { get; set; } = new List<Invoice>();
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+    public ICollection<Feature> Features { get; set; } = new List<Feature>();
+    public ICollection<Bug> Bugs { get; set; } = new List<Bug>();
+    public ICollection<Release> Releases { get; set; } = new List<Release>();
 }

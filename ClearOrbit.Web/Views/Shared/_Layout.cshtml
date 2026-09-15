@@ -75,7 +75,18 @@
                    href="/Assessments">
                     <span class="icon">◆</span> Assessments
                 </a>
-                <a class="app-nav-item" href="#"><span class="icon">◆</span> Software</a>
+                <a class="app-nav-item @(currentController == "Software" || currentController == "Features" ? "active" : "")" 
+                   href="/Software">
+                    <span class="icon">◆</span> Software
+                </a>
+                <a class="app-nav-item @(currentController == "Bugs" ? "active" : "")" 
+                   href="/Bugs">
+                    <span class="icon">◆</span> Bugs
+                </a>
+                <a class="app-nav-item @(currentController == "Releases" ? "active" : "")" 
+                   href="/Releases">
+                    <span class="icon">◆</span> Releases
+                </a>
                 <a class="app-nav-item" href="#"><span class="icon">◆</span> Games</a>
                 <a class="app-nav-item" href="#"><span class="icon">◆</span> Designs</a>
                 <a class="app-nav-item" href="#"><span class="icon">◆</span> Innovation Lab</a>

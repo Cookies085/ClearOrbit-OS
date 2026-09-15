@@ -1,0 +1,165 @@
+﻿@model ClearOrbit.Web.ViewModels.BugListItem
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "_Layout";
+
+    var statusColor = Model.StatusName switch
+    {
+        "Open" => "#DC2626", "InProgress" => "#F59E0B",
+        "Fixed" => "#3B82F6", "Verified" => "#16A34A",
+        "Closed" => "#9CA3AF", "WontFix" => "#6B7280",
+        _ => "#6B7280"
+    };
+    var statusLabel = Model.StatusName switch
+    {
+        "InProgress" => "In Progress",
+        "WontFix" => "Won't Fix",
+        _ => Model.StatusName
+    };
+    var sevColor = Model.SeverityName switch
+    {
+        "Trivial" => "#9CA3AF", "Minor" => "#3B82F6",
+        "Major" => "#F59E0B", "Critical" => "#DC2626",
+        "Blocker" => "#7F1D1D", _ => "#6B7280"
+    };
+    var priorityColor = Model.PriorityName switch
+    {
+        "Low" => "#9CA3AF", "Normal" => "#3B82F6",
+        "High" => "#F59E0B", "Urgent" => "#DC2626",
+        _ => "#6B7280"
+    };
+}
+
+@section TopbarActions {
+    <a href="/Bugs/Edit/@Model.Id" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">Edit Bug</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<!-- Hero -->
+<div class="division-hero" style="--hero-accent: @Model.DivisionAccent; --hero-accent-soft: @(Model.DivisionAccent)44; --hero-accent-glow: @(Model.DivisionAccent)88;">
+    <div class="division-hero-inner">
+        <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
+            <div>
+                <div class="division-hero-eyebrow">@Model.Code</div>
+                <h2 style="font-size:1.9rem;font-weight:700;color:#fff;letter-spacing:-0.5px;margin:8px 0 6px;">@Model.Title</h2>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+                    <span class="badge" style="background:@(statusColor)33;color:#fff;border:1px solid @(statusColor)55;padding:5px 14px;">@statusLabel</span>
+                    <span class="badge" style="background:@(sevColor)33;color:#fff;border:1px solid @(sevColor)55;padding:5px 14px;">@Model.SeverityName</span>
+                    <span class="badge" style="background:@(priorityColor)33;color:#fff;border:1px solid @(priorityColor)55;padding:5px 14px;">@Model.PriorityName</span>
+                    <span class="badge" style="background:@(Model.DivisionAccent)33;color:#fff;border:1px solid @(Model.DivisionAccent)55;padding:5px 14px;">@Model.DivisionName</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="division-hero-stats" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));">
+            <div>
+                <div class="division-hero-stat-label">Reported</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@Model.ReportedAt.ToString("dd MMM yyyy")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Fixed</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;color:@(Model.FixedAt.HasValue ? "#7FE9A5" : "rgba(255,255,255,0.4)");">
+                    @(Model.FixedAt?.ToString("dd MMM") ?? "—")
+                </div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Verified</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;color:@(Model.VerifiedAt.HasValue ? "#7FE9A5" : "rgba(255,255,255,0.4)");">
+                    @(Model.VerifiedAt?.ToString("dd MMM") ?? "—")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reproduction -->
+<div class="co-card">
+    <h3 class="co-card-title" style="margin:0 0 20px;">Reproduction</h3>
+
+    @if (string.IsNullOrWhiteSpace(Model.StepsToReproduce) && string.IsNullOrWhiteSpace(Model.ExpectedBehavior) && string.IsNullOrWhiteSpace(Model.ActualBehavior))
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No reproduction details provided.</p>
+    }
+    else
+    {
+        @if (!string.IsNullOrWhiteSpace(Model.StepsToReproduce))
+        {
+            <div style="margin-bottom:20px;">
+                <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:8px;">Steps to Reproduce</div>
+                <div style="background:var(--co-light);padding:16px 20px;border-radius:10px;font-size:0.9rem;white-space:pre-wrap;line-height:1.7;border-left:3px solid @Model.DivisionAccent;">@Model.StepsToReproduce</div>
+            </div>
+        }
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            @if (!string.IsNullOrWhiteSpace(Model.ExpectedBehavior))
+            {
+                <div>
+                    <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:8px;">Expected</div>
+                    <div style="background:#ECFDF5;padding:16px 20px;border-radius:10px;font-size:0.9rem;line-height:1.7;border-left:3px solid #16A34A;color:#065F46;">@Model.ExpectedBehavior</div>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.ActualBehavior))
+            {
+                <div>
+                    <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:8px;">Actual</div>
+                    <div style="background:#FEF2F2;padding:16px 20px;border-radius:10px;font-size:0.9rem;line-height:1.7;border-left:3px solid #DC2626;color:#991B1B;">@Model.ActualBehavior</div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <div class="co-card">
+        <h3 class="co-card-title" style="margin:0 0 16px;">Description</h3>
+        <div style="color:var(--co-gray-700);font-size:0.92rem;line-height:1.75;white-space:pre-wrap;">@Model.Description</div>
+    </div>
+}
+
+<!-- Metadata -->
+<div class="co-card">
+    <h3 class="co-card-title" style="margin:0 0 20px;">Details</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;">
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Project</div>
+            <div style="font-weight:600;font-size:0.92rem;">
+                @if (!string.IsNullOrWhiteSpace(Model.ProjectName))
+                {
+                    <a href="/Projects/Details/@Model.ProjectId" style="color:var(--co-deep);">@Model.ProjectName</a>
+                }
+                else
+                {
+                    <span style="color:#9CA3AF;">—</span>
+                }
+            </div>
+        </div>
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Feature</div>
+            <div style="font-weight:600;font-size:0.92rem;">
+                @if (!string.IsNullOrWhiteSpace(Model.FeatureTitle))
+                {
+                    <a href="/Features/Details/@Model.FeatureId" style="color:var(--co-deep);">@Model.FeatureTitle</a>
+                }
+                else
+                {
+                    <span style="color:#9CA3AF;">—</span>
+                }
+            </div>
+        </div>
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Assigned To</div>
+            <div style="font-weight:600;font-size:0.92rem;">@(Model.AssignedToName ?? "Unassigned")</div>
+        </div>
+
+    </div>
+</div>
+
+<a href="/Bugs" style="font-size:0.9rem;">← Back to Bugs</a>

@@ -227,4 +227,46 @@
     }
 </div>
 
+@{
+    var featuresResp = ViewData["Features"] as List<ClearOrbit.Web.ViewModels.FeatureListItem> ?? new();
+}
+
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Requested Features (@featuresResp.Count)</h3>
+        <a href="/Features/Create" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Feature</a>
+    </div>
+
+    @if (featuresResp.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No features requested by this client yet.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Feature</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Target</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in featuresResp)
+                {
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@f.Code</td>
+                        <td><a href="/Features/Edit/@f.Id" style="font-weight:600;">@f.Title</a></td>
+                        <td>@f.PriorityName</td>
+                        <td>@f.StatusName</td>
+                        <td>@(f.TargetDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
 <a href="/Clients" style="font-size:0.9rem;">← Back to Clients</a>

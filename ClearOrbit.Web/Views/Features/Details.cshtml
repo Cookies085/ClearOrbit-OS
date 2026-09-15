@@ -1,0 +1,238 @@
+﻿@model ClearOrbit.Web.ViewModels.FeatureListItem
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "_Layout";
+
+    var bugs = ViewData["Bugs"] as List<ClearOrbit.Web.ViewModels.BugListItem> ?? new();
+    var releases = ViewData["Releases"] as List<ClearOrbit.Web.ViewModels.ReleaseListItem> ?? new();
+
+    var statusColor = Model.StatusName switch
+    {
+        "Proposed" => "#6B7280",
+        "Approved" => "#3B82F6",
+        "InProgress" => "#8B5CF6",
+        "Testing" => "#F59E0B",
+        "Shipped" => "#16A34A",
+        "Rejected" => "#9CA3AF",
+        _ => "#6B7280"
+    };
+    var statusLabel = Model.StatusName switch
+    {
+        "InProgress" => "In Progress",
+        _ => Model.StatusName
+    };
+    var priorityColor = Model.PriorityName switch
+    {
+        "Low" => "#9CA3AF",
+        "Normal" => "#3B82F6",
+        "High" => "#F59E0B",
+        "Critical" => "#DC2626",
+        _ => "#6B7280"
+    };
+}
+
+@section TopbarActions {
+    <a href="/Features/Edit/@Model.Id" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">Edit Feature</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<!-- Hero -->
+<div class="division-hero" style="--hero-accent: @Model.DivisionAccent; --hero-accent-soft: @(Model.DivisionAccent)44; --hero-accent-glow: @(Model.DivisionAccent)88;">
+    <div class="division-hero-inner">
+
+        <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
+            <div>
+                <div class="division-hero-eyebrow">@Model.Code</div>
+                <h2 style="font-size:1.9rem;font-weight:700;color:#fff;letter-spacing:-0.5px;margin:8px 0 6px;">@Model.Title</h2>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+                    <span class="badge" style="background:@(statusColor)33;color:#fff;border:1px solid @(statusColor)55;padding:5px 14px;">@statusLabel</span>
+                    <span class="badge" style="background:@(priorityColor)33;color:#fff;border:1px solid @(priorityColor)55;padding:5px 14px;">@Model.PriorityName</span>
+                    <span class="badge" style="background:@(Model.DivisionAccent)33;color:#fff;border:1px solid @(Model.DivisionAccent)55;padding:5px 14px;">@Model.DivisionName</span>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <p style="color:rgba(255,255,255,0.75);margin:20px 0 0;max-width:720px;font-size:0.95rem;line-height:1.7;">
+                @Model.Description
+            </p>
+        }
+
+        <div class="division-hero-stats" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));">
+            <div>
+                <div class="division-hero-stat-label">Source</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@Model.SourceName</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Client</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.ClientName ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Project</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;font-family:monospace;">@(Model.ProjectCode ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Est. Effort</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.EstimatedEffort?.ToString() ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Act. Effort</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.ActualEffort?.ToString() ?? "—")</div>
+            </div>
+            <div>
+                <div class="division-hero-stat-label">Target</div>
+                <div class="division-hero-stat-value" style="font-size:1.05rem;">@(Model.TargetDate?.ToString("dd MMM") ?? "—")</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Metadata -->
+<div class="co-card">
+    <h3 class="co-card-title" style="margin:0 0 20px;">Details</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;">
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Client</div>
+            <div style="font-weight:600;font-size:0.92rem;">
+                @if (!string.IsNullOrWhiteSpace(Model.ClientName))
+                {
+                    <a href="/Clients/Details/@Model.ClientId" style="color:var(--co-deep);">@Model.ClientName</a>
+                }
+                else
+                {
+                    <span style="color:#9CA3AF;">—</span>
+                }
+            </div>
+        </div>
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Project</div>
+            <div style="font-weight:600;font-size:0.92rem;">
+                @if (!string.IsNullOrWhiteSpace(Model.ProjectName))
+                {
+                    <a href="/Projects/Details/@Model.ProjectId" style="color:var(--co-deep);">@Model.ProjectName</a>
+                }
+                else
+                {
+                    <span style="color:#9CA3AF;">—</span>
+                }
+            </div>
+        </div>
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Shipped</div>
+            <div style="font-weight:600;font-size:0.92rem;color:@(Model.ShippedAt.HasValue ? "#16A34A" : "#6B7280");">
+                @(Model.ShippedAt?.ToString("dd MMM yyyy") ?? "Not yet")
+            </div>
+        </div>
+
+        <div>
+            <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px;">Created</div>
+            <div style="font-weight:600;font-size:0.92rem;">@Model.CreatedAt.ToString("dd MMM yyyy")</div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Linked Bugs -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Linked Bugs (@bugs.Count)</h3>
+        <a href="/Bugs/Create?featureId=@Model.Id" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ Report Bug</a>
+    </div>
+
+    @if (bugs.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No bugs reported against this feature.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Bug</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Reported</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in bugs)
+                {
+                    var sevColor = b.SeverityName switch
+                    {
+                        "Trivial" => "#9CA3AF",
+                        "Minor" => "#3B82F6",
+                        "Major" => "#F59E0B",
+                        "Critical" => "#DC2626",
+                        "Blocker" => "#7F1D1D",
+                        _ => "#6B7280"
+                    };
+                    var bugStatusColor = b.StatusName switch
+                    {
+                        "Open" => "#DC2626",
+                        "InProgress" => "#F59E0B",
+                        "Fixed" => "#3B82F6",
+                        "Verified" => "#16A34A",
+                        "Closed" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@b.Code</td>
+                        <td><a href="/Bugs/Details/@b.Id" style="font-weight:600;color:var(--co-deep);">@b.Title</a></td>
+                        <td><span class="badge" style="background:@(sevColor)22;color:@sevColor;">@b.SeverityName</span></td>
+                        <td><span class="badge" style="background:@(bugStatusColor)22;color:@bugStatusColor;">@b.StatusName</span></td>
+                        <td>@b.ReportedAt.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Bundled in Releases -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Included in Releases (@releases.Count)</h3>
+        <a href="/Releases/Create" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Release</a>
+    </div>
+
+    @if (releases.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">This feature isn't part of any release yet.</p>
+    }
+    else
+    {
+        <div style="display:flex;flex-direction:column;gap:8px;">
+            @foreach (var r in releases)
+            {
+                var relStatusColor = r.StatusName switch
+                {
+                    "Planning" => "#6B7280",
+                    "InDevelopment" => "#8B5CF6",
+                    "InTesting" => "#F59E0B",
+                    "Released" => "#16A34A",
+                    "Cancelled" => "#9CA3AF",
+                    _ => "#6B7280"
+                };
+                <a href="/Releases/Details/@r.Id" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--co-light);border-radius:10px;text-decoration:none;">
+                    <div>
+                        <span style="font-family:monospace;font-weight:700;color:var(--co-electric);">@r.Version</span>
+                        <span style="margin-left:12px;color:var(--co-deep);font-weight:500;">@r.Name</span>
+                    </div>
+                    <span class="badge" style="background:@(relStatusColor)22;color:@relStatusColor;">@r.StatusName</span>
+                </a>
+            }
+        </div>
+    }
+</div>
+
+<a href="/Features" style="font-size:0.9rem;">← Back to Features</a>

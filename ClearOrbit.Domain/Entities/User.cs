@@ -17,4 +17,8 @@ public class User : BaseEntity
     public ICollection<TaskItem> AssignedTasks { get; set; } = new List<TaskItem>();
     public ICollection<AttendanceRecord> RecordedAttendance { get; set; } = new List<AttendanceRecord>();
     public ICollection<Result> RecordedResults { get; set; } = new List<Result>();
+    public ICollection<Feature> AssignedFeatures { get; set; } = new List<Feature>();
+    public ICollection<Bug> ReportedBugs { get; set; } = new List<Bug>();
+    public ICollection<Bug> AssignedBugs { get; set; } = new List<Bug>();
+    public ICollection<Release> ManagedReleases { get; set; } = new List<Release>();
 }

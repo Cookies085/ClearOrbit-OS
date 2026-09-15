@@ -1,0 +1,93 @@
+﻿@model List<ClearOrbit.Web.ViewModels.BugListItem>
+@{
+    ViewData["Title"] = "Bugs";
+    Layout = "_Layout";
+}
+
+@section TopbarActions {
+    <a href="/Bugs/Create" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;">+ New Bug</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<div class="co-card" style="padding:0;overflow:hidden;">
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No bugs reported</h3>
+            <p>Everything is working perfectly — or nobody's found anything broken yet.</p>
+            <a href="/Bugs/Create" class="btn-primary">Report First Bug</a>
+        </div>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Bug</th>
+                    <th>Division</th>
+                    <th>Severity</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Reported</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    var statusColor = b.StatusName switch
+                    {
+                        "Open" => "#DC2626",
+                        "InProgress" => "#F59E0B",
+                        "Fixed" => "#3B82F6",
+                        "Verified" => "#16A34A",
+                        "Closed" => "#9CA3AF",
+                        "WontFix" => "#6B7280",
+                        _ => "#6B7280"
+                    };
+                    var severityColor = b.SeverityName switch
+                    {
+                        "Trivial" => "#9CA3AF",
+                        "Minor" => "#3B82F6",
+                        "Major" => "#F59E0B",
+                        "Critical" => "#DC2626",
+                        "Blocker" => "#7F1D1D",
+                        _ => "#6B7280"
+                    };
+
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@b.Code</td>
+                        <td>
+                            <a href="/Bugs/Details/@b.Id" style="font-weight:600;color:var(--co-deep);">@b.Title</a>
+                            @if (!string.IsNullOrWhiteSpace(b.FeatureCode))
+                            {
+                                <div style="font-size:0.72rem;color:#6B7280;">affects @b.FeatureCode</div>
+                            }
+                            else if (!string.IsNullOrWhiteSpace(b.ProjectCode))
+                            {
+                                <div style="font-size:0.72rem;color:#6B7280;">on @b.ProjectCode</div>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge" style="background:@(b.DivisionAccent)22;color:@b.DivisionAccent;">@b.DivisionName</span>
+                        </td>
+                        <td><span class="badge" style="background:@(severityColor)22;color:@severityColor;">@b.SeverityName</span></td>
+                        <td>@b.PriorityName</td>
+                        <td><span class="badge" style="background:@(statusColor)22;color:@statusColor;">@b.StatusName</span></td>
+                        <td>@b.ReportedAt.ToString("yyyy-MM-dd")</td>
+                        <td style="text-align:right;white-space:nowrap;">
+                            <a href="/Bugs/Details/@b.Id" style="font-size:0.85rem;">View</a>
+                            <span style="color:E5E7EB;margin:0 8px;">·</span>
+                            <a href="/Bugs/Edit/@b.Id" style="font-size:0.85rem;">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

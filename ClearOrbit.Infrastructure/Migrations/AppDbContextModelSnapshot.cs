@@ -174,6 +174,94 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.ToTable("AuditLogs", (string)null);
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Bug", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ActualBehavior")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("AssignedToUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DivisionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExpectedBehavior")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("FeatureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("FixedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ReportedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ReportedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Severity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StepsToReproduce")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedToUserId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("DivisionId");
+
+                    b.HasIndex("FeatureId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ReportedByUserId");
+
+                    b.ToTable("Bugs", (string)null);
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Class", b =>
                 {
                     b.Property<Guid>("Id")
@@ -562,6 +650,88 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Expenses", (string)null);
+                });
+
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Feature", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ActualEffort")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("AssignedToUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DivisionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("EstimatedEffort")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ReleaseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ShippedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Source")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("TargetDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedToUserId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("DivisionId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ReleaseId");
+
+                    b.ToTable("Features", (string)null);
                 });
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Invoice", b =>
@@ -977,6 +1147,76 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.ToTable("Projects", (string)null);
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Release", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DivisionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("PlannedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ReleaseManagerUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReleaseNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReleasedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("DivisionId");
+
+                    b.HasIndex("ReleaseManagerUserId");
+
+                    b.HasIndex("ProjectId", "Version")
+                        .IsUnique()
+                        .HasFilter("[ProjectId] IS NOT NULL");
+
+                    b.ToTable("Releases", (string)null);
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Result", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1359,6 +1599,45 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("RecordedByUser");
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Bug", b =>
+                {
+                    b.HasOne("ClearOrbit.Domain.Entities.User", "AssignedToUser")
+                        .WithMany("AssignedBugs")
+                        .HasForeignKey("AssignedToUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Division", "Division")
+                        .WithMany("Bugs")
+                        .HasForeignKey("DivisionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Feature", "Feature")
+                        .WithMany("Bugs")
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Project", "Project")
+                        .WithMany("Bugs")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.User", "ReportedByUser")
+                        .WithMany("ReportedBugs")
+                        .HasForeignKey("ReportedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("AssignedToUser");
+
+                    b.Navigation("Division");
+
+                    b.Navigation("Feature");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ReportedByUser");
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Class", b =>
                 {
                     b.HasOne("ClearOrbit.Domain.Entities.Tutor", "Tutor")
@@ -1463,6 +1742,45 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Feature", b =>
+                {
+                    b.HasOne("ClearOrbit.Domain.Entities.User", "AssignedToUser")
+                        .WithMany("AssignedFeatures")
+                        .HasForeignKey("AssignedToUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Client", "Client")
+                        .WithMany("RequestedFeatures")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Division", "Division")
+                        .WithMany("Features")
+                        .HasForeignKey("DivisionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Project", "Project")
+                        .WithMany("Features")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Release", "Release")
+                        .WithMany("Features")
+                        .HasForeignKey("ReleaseId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("AssignedToUser");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Division");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Release");
+                });
+
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Invoice", b =>
                 {
                     b.HasOne("ClearOrbit.Domain.Entities.Client", "Client")
@@ -1541,6 +1859,31 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("RequestingDivision");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Release", b =>
+                {
+                    b.HasOne("ClearOrbit.Domain.Entities.Division", "Division")
+                        .WithMany("Releases")
+                        .HasForeignKey("DivisionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ClearOrbit.Domain.Entities.Project", "Project")
+                        .WithMany("Releases")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ClearOrbit.Domain.Entities.User", "ReleaseManagerUser")
+                        .WithMany("ManagedReleases")
+                        .HasForeignKey("ReleaseManagerUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Division");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ReleaseManagerUser");
                 });
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Result", b =>
@@ -1698,19 +2041,32 @@ namespace ClearOrbit.Infrastructure.Migrations
                     b.Navigation("Invoices");
 
                     b.Navigation("Projects");
+
+                    b.Navigation("RequestedFeatures");
                 });
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Division", b =>
                 {
+                    b.Navigation("Bugs");
+
                     b.Navigation("DeliveredProjects");
 
                     b.Navigation("Expenses");
 
+                    b.Navigation("Features");
+
                     b.Navigation("IssuedInvoices");
+
+                    b.Navigation("Releases");
 
                     b.Navigation("RequestedProjects");
 
                     b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Feature", b =>
+                {
+                    b.Navigation("Bugs");
                 });
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Invoice", b =>
@@ -1738,11 +2094,22 @@ namespace ClearOrbit.Infrastructure.Migrations
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Project", b =>
                 {
+                    b.Navigation("Bugs");
+
                     b.Navigation("Expenses");
+
+                    b.Navigation("Features");
 
                     b.Navigation("Invoices");
 
+                    b.Navigation("Releases");
+
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("ClearOrbit.Domain.Entities.Release", b =>
+                {
+                    b.Navigation("Features");
                 });
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.Service", b =>
@@ -1757,11 +2124,19 @@ namespace ClearOrbit.Infrastructure.Migrations
 
             modelBuilder.Entity("ClearOrbit.Domain.Entities.User", b =>
                 {
+                    b.Navigation("AssignedBugs");
+
+                    b.Navigation("AssignedFeatures");
+
                     b.Navigation("AssignedTasks");
+
+                    b.Navigation("ManagedReleases");
 
                     b.Navigation("RecordedAttendance");
 
                     b.Navigation("RecordedResults");
+
+                    b.Navigation("ReportedBugs");
 
                     b.Navigation("Sessions");
 

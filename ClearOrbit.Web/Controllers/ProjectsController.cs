@@ -23,6 +23,32 @@ public class ProjectsController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var projectResp = await _api.GetAsync<ApiResult<ProjectListItem>>($"/api/Projects/{id}", Token);
+        if (projectResp is null || !projectResp.Success || projectResp.Data is null) return NotFound();
+
+        var featuresTask = _api.GetAsync<ApiResult<List<FeatureListItem>>>($"/api/Features/project/{id}", Token);
+        var bugsTask = _api.GetAsync<ApiResult<List<BugListItem>>>($"/api/Bugs/project/{id}", Token);
+        var releasesTask = _api.GetAsync<ApiResult<List<ReleaseListItem>>>($"/api/Releases/project/{id}", Token);
+        var invoicesTask = _api.GetAsync<ApiResult<List<InvoiceListItem>>>("/api/Invoices", Token);
+        var expensesTask = _api.GetAsync<ApiResult<List<ExpenseListItem>>>($"/api/Expenses/project/{id}", Token);
+
+        await Task.WhenAll(featuresTask, bugsTask, releasesTask, invoicesTask, expensesTask);
+
+        ViewData["Features"] = featuresTask.Result?.Data ?? new List<FeatureListItem>();
+        ViewData["Bugs"] = bugsTask.Result?.Data ?? new List<BugListItem>();
+        ViewData["Releases"] = releasesTask.Result?.Data ?? new List<ReleaseListItem>();
+        ViewData["Invoices"] = (invoicesTask.Result?.Data ?? new List<InvoiceListItem>())
+            .Where(i => i.ProjectId == id).ToList();
+        ViewData["Expenses"] = expensesTask.Result?.Data ?? new List<ExpenseListItem>();
+
+        ViewData["PageTitle"] = $"{projectResp.Data.Code} — {projectResp.Data.Name}";
+        ViewData["PageSubtitle"] = projectResp.Data.DivisionName;
+        return View(projectResp.Data);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Create()
     {
         ViewData["PageTitle"] = "New Project";
@@ -69,7 +95,7 @@ public class ProjectsController : Controller
         }
 
         TempData["Success"] = $"Project {response.Data?.Code} created.";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Details), new { id = response.Data!.Id });
     }
 
     [HttpGet]
@@ -136,7 +162,7 @@ public class ProjectsController : Controller
         }
 
         TempData["Success"] = "Project updated.";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Details), new { id });
     }
 
     private async Task LoadDropdowns(ProjectViewModel vm)
