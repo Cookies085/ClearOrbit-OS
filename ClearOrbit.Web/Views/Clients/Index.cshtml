@@ -41,7 +41,9 @@
                 @foreach (var c in Model)
                 {
                     <tr>
-                        <td style="font-weight:600;">@c.Name</td>
+                        <td>
+                            <a href="/Clients/Details/@c.Id" style="font-weight:600;color:var(--co-deep);">@c.Name</a>
+                        </td>
                         <td>
                             @if (!string.IsNullOrWhiteSpace(c.Industry))
                             {
@@ -56,7 +58,9 @@
                         </td>
                         <td>@c.ContactCount</td>
                         <td>@c.CreatedAt.ToString("yyyy-MM-dd")</td>
-                        <td style="text-align:right;">
+                        <td style="text-align:right;white-space:nowrap;">
+                            <a href="/Clients/Details/@c.Id" style="font-size:0.85rem;">View</a>
+                            <span style="color:#E5E7EB;margin:0 8px;">·</span>
                             <a href="/Clients/Edit/@c.Id" style="font-size:0.85rem;">Edit</a>
                         </td>
                     </tr>

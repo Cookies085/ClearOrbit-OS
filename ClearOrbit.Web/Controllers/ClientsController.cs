@@ -69,6 +69,32 @@ public class ClientsController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Details(Guid? id = null)
+    {
+        if (!id.HasValue || id.Value == Guid.Empty)
+            return RedirectToAction(nameof(Index));
+
+        var clientResp = await _api.GetAsync<ApiResult<ClientListItem>>($"/api/Clients/{id.Value}", Token);
+        if (clientResp is null || !clientResp.Success || clientResp.Data is null) return NotFound();
+
+        var contactsResp = await _api.GetAsync<ApiResult<List<ContactListItem>>>($"/api/Contacts/client/{id.Value}", Token);
+        var projectsResp = await _api.GetAsync<ApiResult<List<ProjectListItem>>>("/api/Projects", Token);
+        var invoicesResp = await _api.GetAsync<ApiResult<List<InvoiceListItem>>>("/api/Invoices", Token);
+
+        ViewData["PageTitle"] = clientResp.Data.Name;
+        ViewData["PageSubtitle"] = "Client overview";
+        ViewData["Contacts"] = contactsResp?.Data ?? new List<ContactListItem>();
+
+        var allProjects = projectsResp?.Data ?? new List<ProjectListItem>();
+        ViewData["Projects"] = allProjects.Where(p => p.ClientId == id.Value).ToList();
+
+        var allInvoices = invoicesResp?.Data ?? new List<InvoiceListItem>();
+        ViewData["Invoices"] = allInvoices.Where(i => i.ClientId == id.Value).ToList();
+
+        return View(clientResp.Data);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         var response = await _api.GetAsync<ApiResult<ClientListItem>>($"/api/Clients/{id}", Token);

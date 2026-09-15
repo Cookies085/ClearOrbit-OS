@@ -1,0 +1,230 @@
+﻿@model ClearOrbit.Web.ViewModels.ClientListItem
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "_Layout";
+
+    var contacts = ViewData["Contacts"] as List<ClearOrbit.Web.ViewModels.ContactListItem> ?? new();
+    var projects = ViewData["Projects"] as List<ClearOrbit.Web.ViewModels.ProjectListItem> ?? new();
+    var invoices = ViewData["Invoices"] as List<ClearOrbit.Web.ViewModels.InvoiceListItem> ?? new();
+
+    var invoicedTotal = invoices.Where(i => i.StatusName != "Cancelled").Sum(i => i.Total);
+    var paidTotal = invoices.Where(i => i.StatusName != "Cancelled").Sum(i => i.AmountPaid);
+    var outstandingTotal = invoices.Where(i => i.StatusName != "Cancelled").Sum(i => i.BalanceDue);
+}
+
+@section TopbarActions {
+    <a href="/Clients/Edit/@Model.Id" class="btn-outline" style="padding:10px 22px;font-size:0.9rem;">Edit Client</a>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div style="background:#DCFCE7;border-left:4px solid #16A34A;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">@success</div>
+}
+
+<!-- Client Header Card -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:24px;">
+        <div>
+            <h1 style="margin:0 0 6px;font-size:1.75rem;letter-spacing:-0.5px;">@Model.Name</h1>
+            <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+                @if (!string.IsNullOrWhiteSpace(Model.Industry))
+                {
+                    <span class="badge badge-blue">@Model.Industry</span>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Website))
+                {
+                    <a href="@Model.Website" target="_blank" rel="noopener" style="font-size:0.85rem;">@Model.Website</a>
+                }
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,auto);gap:28px;">
+            <div style="text-align:right;">
+                <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:4px;">Invoiced</div>
+                <div style="font-size:1.15rem;font-weight:700;">ZAR @invoicedTotal.ToString("N0")</div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:4px;">Paid</div>
+                <div style="font-size:1.15rem;font-weight:700;color:#16A34A;">ZAR @paidTotal.ToString("N0")</div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:4px;">Outstanding</div>
+                <div style="font-size:1.15rem;font-weight:700;color:@(outstandingTotal > 0 ? "#F59E0B" : "#16A34A");">
+                    ZAR @outstandingTotal.ToString("N0")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contacts -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Contacts (@contacts.Count)</h3>
+        <a href="/Contacts/Create?clientId=@Model.Id" class="btn-primary" style="padding:8px 18px;font-size:0.85rem;">+ Add Contact</a>
+    </div>
+
+    @if (contacts.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">
+            No contacts yet. Add the people we work with at @Model.Name.
+        </p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Job Title</th>
+                    <th style="text-align:right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in contacts)
+                {
+                    var roleColor = c.RoleName switch
+                    {
+                        "Primary" => "#1E90FF",
+                        "DecisionMaker" => "#8B5CF6",
+                        "Technical" => "#00B4D8",
+                        "Billing" => "#F59E0B",
+                        _ => "#6B7280"
+                    };
+                    var roleLabel = c.RoleName == "DecisionMaker" ? "Decision Maker" : c.RoleName;
+
+                    <tr>
+                        <td style="font-weight:600;">@c.FullName</td>
+                        <td><span class="badge" style="background:@(roleColor)22;color:@roleColor;">@roleLabel</span></td>
+                        <td><a href="mailto:@c.Email">@c.Email</a></td>
+                        <td>@(c.Phone ?? "—")</td>
+                        <td>@(c.JobTitle ?? "—")</td>
+                        <td style="text-align:right;white-space:nowrap;">
+                            <a href="/Contacts/Edit/@c.Id" style="font-size:0.85rem;">Edit</a>
+                            <span style="color:#E5E7EB;margin:0 6px;">·</span>
+                            <form asp-controller="Contacts" asp-action="Delete" method="post" style="display:inline;margin:0;"
+                                  onsubmit="return confirm('Remove @c.FullName from @Model.Name?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@c.Id" />
+                                <input type="hidden" name="clientId" value="@Model.Id" />
+                                <button type="submit" style="background:none;border:none;color:#DC2626;font-size:0.85rem;cursor:pointer;padding:0;">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Projects -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Projects (@projects.Count)</h3>
+        <a href="/Projects/Create" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Project</a>
+    </div>
+
+    @if (projects.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No projects yet.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Project</th>
+                    <th>Division</th>
+                    <th>Status</th>
+                    <th>Due</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in projects)
+                {
+                    var badgeColor = p.StatusName switch
+                    {
+                        "Draft" => "#6B7280",
+                        "Active" => "#16A34A",
+                        "OnHold" => "#F59E0B",
+                        "Completed" => "#1E90FF",
+                        "Cancelled" => "#DC2626",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td style="font-family:monospace;font-size:0.78rem;color:#6B7280;">@p.Code</td>
+                        <td>
+                            <a href="/Projects/Edit/@p.Id" style="font-weight:600;">@p.Name</a>
+                        </td>
+                        <td>
+                            <span class="badge" style="background:@(p.DivisionAccent)22;color:@p.DivisionAccent;">@p.DivisionName</span>
+                        </td>
+                        <td><span class="badge" style="background:@(badgeColor)22;color:@badgeColor;">@p.StatusName</span></td>
+                        <td>@(p.DueDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Invoices -->
+<div class="co-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 class="co-card-title" style="margin:0;">Invoices (@invoices.Count)</h3>
+        <a href="/Invoices/Create" class="btn-outline" style="padding:8px 18px;font-size:0.85rem;">+ New Invoice</a>
+    </div>
+
+    @if (invoices.Count == 0)
+    {
+        <p style="color:#6B7280;margin:0;font-size:0.9rem;">No invoices yet.</p>
+    }
+    else
+    {
+        <table class="co-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Issued</th>
+                    <th>Due</th>
+                    <th style="text-align:right;">Total</th>
+                    <th style="text-align:right;">Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in invoices)
+                {
+                    var statusColor = i.StatusName switch
+                    {
+                        "Draft" => "#6B7280",
+                        "Sent" => "#3B82F6",
+                        "PartiallyPaid" => "#F59E0B",
+                        "Paid" => "#16A34A",
+                        "Cancelled" => "#9CA3AF",
+                        _ => "#6B7280"
+                    };
+                    <tr>
+                        <td><a href="/Invoices/Details/@i.Id" style="font-family:monospace;font-size:0.8rem;">@i.Code</a></td>
+                        <td>@i.IssueDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @i.DueDate.ToString("yyyy-MM-dd")
+                            @if (i.IsOverdue) { <span style="color:#DC2626;font-size:0.7rem;font-weight:600;"> · OVERDUE</span> }
+                        </td>
+                        <td style="text-align:right;font-weight:600;">@i.Currency @i.Total.ToString("N0")</td>
+                        <td style="text-align:right;font-weight:600;color:@(i.BalanceDue > 0 ? "#F59E0B" : "#16A34A");">
+                            @i.Currency @i.BalanceDue.ToString("N0")
+                        </td>
+                        <td><span class="badge" style="background:@(statusColor)22;color:@statusColor;">@i.StatusName</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<a href="/Clients" style="font-size:0.9rem;">← Back to Clients</a>
